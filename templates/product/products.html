@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Products</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd">
+    <a class="navbar-brand" href="/products">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPbku6filg2T_3FpVojbHFMpWy-BYRkjkPWHrDMqZqgWKNfgpU"
+             width="30px" height="30px"
+             class="d-inline-block align-top">Store</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/product/add">Add Product <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+
+    </div>
+
+</nav>
+<div class="container p-3">
+    <#setting locale="en_US">
+    <div class="row">
+        <#list products as product>
+        <div class="col-md-3 p-4">
+
+            <div class="card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS9TgzGiNTivkAh4Og5Bs0ECc0tfKk3J-C2NmUEauFGb-J-A16"
+                     alt="" class="card-img-top">
+                <div class="card-body">
+                    <h4 class="card-title">${product.name}</h4>
+                    <p class="card-text">Price = ${product.price}$<br>Date created : ${product.creationDate?datetime("yyyy-MM-dd'T'HH:mm:ss")}</p>
+                </div>
+            </div>
+
+        </div>
+    </#list>
+</div>
+</body>
+</html>
