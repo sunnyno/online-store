@@ -22,9 +22,7 @@ public class ProductRowMapper {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeZone(TimeZone.getDefault());
             Timestamp date = resultSet.getTimestamp("creation_date", calendar);
-            LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()),
-                    ZoneId.systemDefault());
-            product.setCreationDate(localDateTime);
+            product.setCreationDate(date.toLocalDateTime());
             product.setName(resultSet.getString("name"));
             product.setPrice(resultSet.getDouble("price"));
             return product;
