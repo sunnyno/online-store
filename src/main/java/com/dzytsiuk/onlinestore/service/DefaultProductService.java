@@ -6,18 +6,21 @@ import com.dzytsiuk.onlinestore.entity.Product;
 
 import java.util.List;
 
-public class ProductService {
+public class DefaultProductService implements ProductService {
 
     private ProductDao productDao;
 
+    @Override
     public List<Product> getAll() {
         return productDao.getAllProducts();
     }
 
+    @Override
     public void insert(Product product) {
         productDao.insertProduct(product);
     }
 
+    @Override
     public void setProductDao(ProductDao productDao) {
         this.productDao = productDao;
     }

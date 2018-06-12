@@ -1,10 +1,8 @@
-CREATE DATABASE online_store;
-
-USE online_store;
+CREATE DATABASE "online-store";
 
 CREATE TABLE product (
-  id            BIGINT PRIMARY KEY AUTO_INCREMENT,
+  id            SERIAL PRIMARY KEY,
   creation_date TIMESTAMP,
   name          VARCHAR(50),
-  price         DOUBLE
+  price         REAL
 );
