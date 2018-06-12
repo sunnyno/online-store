@@ -18,7 +18,7 @@ public class DataSourceManager {
     private static final String SSL = "ssl";
     private static final String SSLFACTORY = "sslfactory";
     private static final String DBCONFIG_DIR = "src/main/resources/dbconfig";
-    public static final String DEFAULT_APPLICATION_PROPERTY_FILE = "dev.application.properties";
+    private static final String DEFAULT_APPLICATION_PROPERTY_FILE = "dev.application.properties";
 
     public PGSimpleDataSource getPgSimpleDataSource() {
         try {
