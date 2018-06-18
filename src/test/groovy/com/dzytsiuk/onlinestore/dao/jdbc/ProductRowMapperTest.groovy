@@ -1,5 +1,6 @@
 package com.dzytsiuk.onlinestore.dao.jdbc
 
+import com.dzytsiuk.onlinestore.dao.jdbc.mapper.ProductRowMapper
 import com.dzytsiuk.onlinestore.entity.Product
 import org.junit.Test
 

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ProductDao {
 
-    List<Product> getAllProducts();
+    List<Product> findAll();
 
-    void insertProduct(Product product);
+    void save(Product product);
 
 
 }

@@ -6,15 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
+
 public class AssetsServlet extends HttpServlet {
 
-    private static final String ASSETS_DIR = "src/main/resources";
-    private static final int DEFAULT_BUFFER_SIZE = 8192;
+    private static final int DEFAULT_BUFFER_SIZE = 1024;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        String requestURI = ASSETS_DIR + request.getRequestURI();
-        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(new File(requestURI)))) {
+        String requestURI = request.getRequestURI();
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(getClass().getResourceAsStream(requestURI))) {
             byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
             int count;
             ServletOutputStream outputStream = response.getOutputStream();
