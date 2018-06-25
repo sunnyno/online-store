@@ -18,7 +18,7 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HashMap<String, Object> hashMap = new HashMap<>();
-        List<Product> products = productService.getAll();
+        List<Product> products = productService.findAll();
         hashMap.put("products", products);
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);

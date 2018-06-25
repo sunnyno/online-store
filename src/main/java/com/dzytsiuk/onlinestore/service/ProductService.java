@@ -7,9 +7,9 @@ import java.util.List;
 
 
 public interface ProductService {
-    List<Product> getAll();
+    List<Product> findAll();
 
-    void insert(Product product);
+    void save(Product product);
 
     void setProductDao(ProductDao productDao);
 }

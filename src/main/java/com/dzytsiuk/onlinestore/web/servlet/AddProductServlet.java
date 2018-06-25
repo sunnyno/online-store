@@ -27,7 +27,7 @@ public class AddProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         String name = request.getParameter("name");
         Double price = Double.valueOf(request.getParameter("price"));
-        productService.insert(new Product(LocalDateTime.now(), name, price));
+        productService.save(new Product(LocalDateTime.now(), name, price));
         response.sendRedirect("/products");
     }
 

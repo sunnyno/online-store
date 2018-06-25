@@ -11,12 +11,12 @@ public class DefaultProductService implements ProductService {
     private ProductDao productDao;
 
     @Override
-    public List<Product> getAll() {
+    public List<Product> findAll() {
         return productDao.findAll();
     }
 
     @Override
-    public void insert(Product product) {
+    public void save(Product product) {
         productDao.save(product);
     }
 
