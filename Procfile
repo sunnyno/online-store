@@ -1,1 +1,1 @@
-web: java -jar target/online-store-1.0-SNAPSHOT-jar-with-dependencies.jar
+web: java -Dport=$PORT -jar target/online-store-1.0-SNAPSHOT-jar-with-dependencies.jar

@@ -35,11 +35,15 @@ public class Starter {
         context.addServlet(new ServletHolder(new AssetsServlet()), "/assets/*");
 
 
-        Server server = new Server(8080);
+        String systemPort = System.getProperty("port");
+        int port = 8080;
+        if(systemPort != null){
+            port = Integer.parseInt(systemPort);
+        }
+        Server server = new Server(port);
         server.setHandler(context);
 
         server.start();
-
     }
 
 
