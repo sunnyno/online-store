@@ -35,7 +35,7 @@ public class Starter {
         context.addServlet(new ServletHolder(new AssetsServlet()), "/assets/*");
 
 
-        Server server = new Server(3000);
+        Server server = new Server(8080);
         server.setHandler(context);
 
         server.start();
