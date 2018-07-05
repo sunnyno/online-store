@@ -12,11 +12,19 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.postgresql.ds.PGSimpleDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Starter {
+    private static final Logger logger = LoggerFactory.getLogger(Starter.class);
 
 
     public static void main(String[] args) throws Exception {
+        logger.info("------------------------------------>Env:");
+        System.getenv().forEach((x, y) -> logger.info(x + " : " + y));
+        logger.info("----------------------------->Properties:");
+        System.getProperties().forEach((x, y) -> logger.info(x + " : " + y));
+
         PGSimpleDataSource dataSource = new DataSourceManager().getPgSimpleDataSource();
 
         ProductDao productDao = new JdbcProductDao(dataSource);
@@ -37,7 +45,7 @@ public class Starter {
 
         String systemPort = System.getProperty("port");
         int port = 8080;
-        if(systemPort != null){
+        if (systemPort != null) {
             port = Integer.parseInt(systemPort);
         }
         Server server = new Server(port);
