@@ -34,7 +34,9 @@ public class Starter {
         context.addServlet(new ServletHolder(addProductServlet), "/product/add");
         context.addServlet(new ServletHolder(new AssetsServlet()), "/assets/*");
 
-
+//TODO:get port from system env
+        System.out.println("PORT  ");
+        System.getenv().forEach((x, y) -> System.out.println(x+" : "+y));
         String systemPort = System.getProperty("port");
         int port = 8080;
         if (systemPort != null) {
