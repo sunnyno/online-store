@@ -19,7 +19,7 @@ class JdbcProductDaoITest {
         def expectedProducts = [product1, product2]
         System.setProperty("properties", "prod.application.properties")
 
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(new DataSourceManager().getPgSimpleDataSource())
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(new DataSourceManager().getDataSource())
         jdbcProductDao.save(product1)
         jdbcProductDao.save(product2)
         def actualProducts = jdbcProductDao.findAll()
@@ -38,7 +38,7 @@ class JdbcProductDaoITest {
         def expectedProduct = new Product(id: -1, creationDate: now, name: "test", price: 100 as double)
 
         System.setProperty("properties", "prod.application.properties")
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(new DataSourceManager().getPgSimpleDataSource())
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(new DataSourceManager().getDataSource())
         jdbcProductDao.save(expectedProduct)
 
         def actualProducts = jdbcProductDao.findAll()

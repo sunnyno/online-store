@@ -8,21 +8,16 @@ import com.dzytsiuk.onlinestore.service.ProductService;
 import com.dzytsiuk.onlinestore.web.servlet.AddProductServlet;
 import com.dzytsiuk.onlinestore.web.servlet.AssetsServlet;
 import com.dzytsiuk.onlinestore.web.servlet.ProductServlet;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.postgresql.ds.PGSimpleDataSource;
 
 public class Starter {
 
 
     public static void main(String[] args) throws Exception {
-        System.out.println("------------------------------------>Env:");
-        System.getenv().forEach((x, y) -> System.out.println(x + " : " + y));
-        System.out.println("----------------------------->Properties:");
-        System.getProperties().forEach((x, y) -> System.out.println(x + " : " + y));
-
-        PGSimpleDataSource dataSource = new DataSourceManager().getPgSimpleDataSource();
+        BasicDataSource dataSource = new DataSourceManager().getDataSource();
 
         ProductDao productDao = new JdbcProductDao(dataSource);
         ProductService productService = new DefaultProductService();
