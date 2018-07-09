@@ -64,12 +64,11 @@ public class Starter {
 
         //port
         int port = 8080;
-        final String[] systemPort = new String[1];
         System.getenv().forEach((x,y) -> System.out.println(x+" : "+y));
-        System.getenv().forEach((x, y) -> systemPort[0] = (x.equals(PORT) ? y : null));
-        if (systemPort[0] != null) {
+        String systemPort = System.getenv().get(PORT);
+        if (systemPort != null) {
             System.out.println(port);
-            port = Integer.parseInt(systemPort[0]);
+            port = Integer.parseInt(systemPort);
         }
 
         //start
