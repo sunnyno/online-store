@@ -69,7 +69,7 @@ public class Starter {
         if (systemPort[0] != null) {
             port = Integer.parseInt(systemPort[0]);
         }
-
+        System.out.println(port);
         //start
         Server server = new Server(port);
         server.setHandler(context);
