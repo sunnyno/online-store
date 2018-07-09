@@ -1,4 +1,4 @@
-package com.dzytsiuk.onlinestore.dao.jdbc
+package com.dzytsiuk.onlinestore.dao.jdbc.mapper
 
 import com.dzytsiuk.onlinestore.dao.jdbc.mapper.ProductRowMapper
 import com.dzytsiuk.onlinestore.entity.Product

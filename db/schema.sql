@@ -6,3 +6,10 @@ CREATE TABLE product (
   name          VARCHAR(50),
   price         REAL
 );
+
+
+CREATE TABLE "user" (
+  id            SERIAL PRIMARY KEY,
+  login          VARCHAR(50),
+  password      VARCHAR(100)
+);

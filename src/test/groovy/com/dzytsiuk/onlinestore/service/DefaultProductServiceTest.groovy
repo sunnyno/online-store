@@ -30,7 +30,5 @@ class DefaultProductServiceTest {
         ProductService productService = new DefaultProductService(productDao: rsProductDao);
         def actualProducts = productService.findAll().collect()
         actualProducts.each { assertTrue(expectedProducts.remove(it)) }
-
-
     }
 }

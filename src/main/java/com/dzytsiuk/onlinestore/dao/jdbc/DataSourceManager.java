@@ -23,7 +23,6 @@ public class DataSourceManager {
     private static final String DBCONFIG_DIR = "/dbconfig/";
     private static final String DEV_APPLICATION_PROPERTY_FILE = "dev.application.properties";
 
-    //TODO:better to set env vars for DEV or load them as properties?
     public BasicDataSource getDataSource() {
         Properties properties = new Properties();
         String env = System.getProperty(ENV);
@@ -37,7 +36,6 @@ public class DataSourceManager {
                 throw new RuntimeException("Error reading properties ", e);
             }
         } else if (env.equalsIgnoreCase(PROD)) {
-            System.out.println(env);
             dataSource.setUrl(System.getenv().get(JDBC_DATABASE_URL));
             dataSource.setUsername(System.getenv().get(JDBC_DATABASE_USERNAME));
             dataSource.setPassword(System.getenv().get(JDBC_DATABASE_PASSWORD));

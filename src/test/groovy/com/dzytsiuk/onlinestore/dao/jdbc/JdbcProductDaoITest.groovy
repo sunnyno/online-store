@@ -17,7 +17,7 @@ class JdbcProductDaoITest {
         def product1 = new Product(creationDate: now, name: "test", price: 100.5 as double)
         def product2 = new Product(creationDate: now, name: "test1", price: 27.00 as double)
         def expectedProducts = [product1, product2]
-        System.setProperty("properties", "prod.application.properties")
+        System.setProperty("properties", "dev.application.properties")
 
         JdbcProductDao jdbcProductDao = new JdbcProductDao(new DataSourceManager().getDataSource())
         jdbcProductDao.save(product1)

@@ -10,6 +10,4 @@ public interface ProductDao {
     List<Product> findAll();
 
     void save(Product product);
-
-
 }
