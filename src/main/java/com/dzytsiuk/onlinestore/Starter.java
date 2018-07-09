@@ -67,9 +67,10 @@ public class Starter {
         final String[] systemPort = new String[1];
         System.getenv().forEach((x, y) -> systemPort[0] = (x.equals(PORT) ? y : null));
         if (systemPort[0] != null) {
+            System.out.println(port);
             port = Integer.parseInt(systemPort[0]);
         }
-        System.out.println(port);
+
         //start
         Server server = new Server(port);
         server.setHandler(context);
