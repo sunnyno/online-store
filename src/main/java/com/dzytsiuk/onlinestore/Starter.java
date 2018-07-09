@@ -23,9 +23,8 @@ import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
 public class Starter {
-
-
-    private static final String PORT = "PORT";
+    private static final String PORT_PARAMETER = "PORT";
+    private static final int DEFAULT_PORT = 8080;
 
     public static void main(String[] args) throws Exception {
         //data source
@@ -63,11 +62,9 @@ public class Starter {
         context.addFilter(new FilterHolder(new Utf8Filter()), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         //port
-        int port = 8080;
-        System.getenv().forEach((x,y) -> System.out.println(x+" : "+y));
-        String systemPort = System.getenv().get(PORT);
+        int port = DEFAULT_PORT;
+        String systemPort = System.getenv().get(PORT_PARAMETER);
         if (systemPort != null) {
-            System.out.println(port);
             port = Integer.parseInt(systemPort);
         }
 
