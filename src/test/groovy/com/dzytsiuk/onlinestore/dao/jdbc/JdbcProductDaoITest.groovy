@@ -1,6 +1,9 @@
 package com.dzytsiuk.onlinestore.dao.jdbc
 
+import com.dzytsiuk.ioc.context.ApplicationContext
+import com.dzytsiuk.ioc.context.ClassPathApplicationContext
 import com.dzytsiuk.onlinestore.entity.Product
+import org.apache.commons.dbcp.BasicDataSource
 import org.junit.Test
 
 import java.time.LocalDateTime
@@ -9,6 +12,8 @@ import java.time.format.DateTimeFormatter
 import static org.junit.Assert.assertNotNull
 
 class JdbcProductDaoITest {
+    String contextFile = ClassLoader.getSystemClassLoader().getResource("context.xml").getPath();
+    ApplicationContext applicationContext = new ClassPathApplicationContext(contextFile);
 
     @Test
     void getAllProductsTest() {
@@ -19,7 +24,8 @@ class JdbcProductDaoITest {
         def expectedProducts = [product1, product2]
         System.setProperty("properties", "dev.application.properties")
 
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(new DataSourceManager().getDataSource())
+        JdbcProductDao jdbcProductDao = new JdbcProductDao()
+        jdbcProductDao.setDataSource(applicationContext.getBean(BasicDataSource.class))
         jdbcProductDao.save(product1)
         jdbcProductDao.save(product2)
         def actualProducts = jdbcProductDao.findAll()
@@ -38,7 +44,8 @@ class JdbcProductDaoITest {
         def expectedProduct = new Product(id: -1, creationDate: now, name: "test", price: 100 as double)
 
         System.setProperty("properties", "prod.application.properties")
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(new DataSourceManager().getDataSource())
+        JdbcProductDao jdbcProductDao = new JdbcProductDao()
+        jdbcProductDao.setDataSource(applicationContext.getBean(BasicDataSource.class))
         jdbcProductDao.save(expectedProduct)
 
         def actualProducts = jdbcProductDao.findAll()

@@ -16,12 +16,7 @@ import java.util.List;
 public class JdbcProductDao implements ProductDao {
 
     private static final ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
-
     private DataSource dataSource;
-
-    public JdbcProductDao(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public List<Product> findAll() {
@@ -65,5 +60,10 @@ public class JdbcProductDao implements ProductDao {
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting product " + product.getName(), e);
         }
+    }
+
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }

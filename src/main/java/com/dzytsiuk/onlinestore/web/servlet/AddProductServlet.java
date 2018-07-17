@@ -3,10 +3,8 @@ package com.dzytsiuk.onlinestore.web.servlet;
 
 import com.dzytsiuk.onlinestore.entity.Product;
 import com.dzytsiuk.onlinestore.service.ProductService;
-import com.dzytsiuk.onlinestore.security.SecurityService;
 import com.dzytsiuk.onlinestore.web.templater.PageGenerator;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

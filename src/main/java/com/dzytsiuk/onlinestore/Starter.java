@@ -1,15 +1,9 @@
 package com.dzytsiuk.onlinestore;
 
-import com.dzytsiuk.onlinestore.dao.ProductDao;
-import com.dzytsiuk.onlinestore.dao.UserDao;
-import com.dzytsiuk.onlinestore.dao.jdbc.DataSourceManager;
-import com.dzytsiuk.onlinestore.dao.jdbc.JdbcProductDao;
-import com.dzytsiuk.onlinestore.dao.jdbc.JdbcUserDao;
-import com.dzytsiuk.onlinestore.service.DefaultProductService;
-import com.dzytsiuk.onlinestore.service.DefaultUserService;
-import com.dzytsiuk.onlinestore.service.ProductService;
+import com.dzytsiuk.ioc.context.ApplicationContext;
+import com.dzytsiuk.ioc.context.ClassPathApplicationContext;
 import com.dzytsiuk.onlinestore.security.SecurityService;
-import com.dzytsiuk.onlinestore.service.UserService;
+import com.dzytsiuk.onlinestore.service.ProductService;
 import com.dzytsiuk.onlinestore.web.filter.SecurityFilter;
 import com.dzytsiuk.onlinestore.web.filter.Utf8Filter;
 import com.dzytsiuk.onlinestore.web.servlet.*;
@@ -25,23 +19,24 @@ import java.util.EnumSet;
 public class Starter {
     private static final String PORT_PARAMETER = "PORT";
     private static final int DEFAULT_PORT = 8080;
+    private static final String SSLFACTORY = "sslfactory";
+    private static final String SSL_FACTORY_VALUE = "org.postgresql.ssl.NonValidatingFactory";
+    private static final String SSL = "ssl";
+
 
     public static void main(String[] args) throws Exception {
-        //data source
-        BasicDataSource dataSource = new DataSourceManager().getDataSource();
+        String contextFile = ClassLoader.getSystemClassLoader().getResource("context.xml").getPath();
+        ApplicationContext applicationContext = new ClassPathApplicationContext(contextFile);
 
-        //dao
-        ProductDao productDao = new JdbcProductDao(dataSource);
-        UserDao userDao = new JdbcUserDao(dataSource);
+        //datasource
+        BasicDataSource dataSource = applicationContext.getBean(BasicDataSource.class);
+        dataSource.addConnectionProperty(SSLFACTORY, SSL_FACTORY_VALUE);
+        dataSource.addConnectionProperty(SSL, String.valueOf(true));
+
 
         //service
-        ProductService productService = new DefaultProductService();
-        productService.setProductDao(productDao);
-        UserService userService = new DefaultUserService();
-        userService.setUserDao(userDao);
-        SecurityService securityService = new SecurityService();
-        securityService.setUserService(userService);
-
+        ProductService productService = applicationContext.getBean(ProductService.class);
+        SecurityService securityService = applicationContext.getBean(SecurityService.class);
 
         //servlet
         ProductServlet productServlet = new ProductServlet();
@@ -73,6 +68,4 @@ public class Starter {
         server.setHandler(context);
         server.start();
     }
-
-
 }

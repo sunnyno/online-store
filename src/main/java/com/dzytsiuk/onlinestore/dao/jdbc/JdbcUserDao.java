@@ -14,10 +14,6 @@ public class JdbcUserDao implements UserDao {
     private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
     private DataSource dataSource;
 
-    public JdbcUserDao(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
     @Override
     public User findByLogin(String login) {
         String query = "select password from \"user\" where login = \'" + login + "\';";
@@ -32,4 +28,8 @@ public class JdbcUserDao implements UserDao {
 
     }
 
+    @Override
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }

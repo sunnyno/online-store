@@ -18,8 +18,8 @@ class ProductRowMapperTest {
                       getString   : { name -> "cake" },
                       getTimestamp: { creation_date -> Timestamp.valueOf(localDateTime) },
                       getDouble   : { price -> 15.56 as double }] as ResultSet
-        Product expectedProduct = new Product(localDateTime, "cake", 15.56 as double);
-        expectedProduct.setId(1);
+        Product expectedProduct = new Product(localDateTime, "cake", 15.56 as double)
+        expectedProduct.setId(1)
         assertEquals(expectedProduct, new ProductRowMapper().mapRow(rsMock))
     }
 }
