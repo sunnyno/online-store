@@ -15,6 +15,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import javax.servlet.DispatcherType;
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.EnumSet;
 
@@ -26,12 +27,14 @@ public class Starter {
 
 
     public static void main(String[] args) throws Exception {
-        File tmp = new File("tmp-context.xml");
-        InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream("context.xml");
-        Files.copy(resourceAsStream, tmp.toPath());
-        ApplicationContext applicationContext = new ClassPathApplicationContext(tmp.getPath());
-        tmp.delete();
+//        File tmp = new File("tmp-context.xml");
+//        InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream("context.xml");
+//        Files.copy(resourceAsStream, tmp.toPath());
+//        ApplicationContext applicationContext = new ClassPathApplicationContext(tmp.getPath());
+//        tmp.delete();
 
+        URL systemResource = ClassLoader.getSystemResource("classes/context.xml");
+        ApplicationContext applicationContext = new ClassPathApplicationContext(systemResource.getPath());
         //service
         ProductService productService = applicationContext.getBean(ProductService.class);
         SecurityService securityService = applicationContext.getBean(SecurityService.class);
