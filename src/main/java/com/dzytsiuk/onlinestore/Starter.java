@@ -32,6 +32,7 @@ public class Starter {
         Files.copy(resourceAsStream, tmp.toPath());
         ApplicationContext applicationContext = new ClassPathApplicationContext(tmp.getPath());
         tmp.delete();
+        resourceAsStream.close();
 
         //service
         ProductService productService = applicationContext.getBean(ProductService.class);
