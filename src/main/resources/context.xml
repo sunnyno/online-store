@@ -24,7 +24,7 @@
         <property name="userService" ref="userService"/>
     </bean>
 
-    <!--factory post processor-->
+    <!--post process-->
     <bean class="com.dzytsiuk.onlinestore.postprocess.PropertyPlaceholderBeanFactoryPostProcessor"/>
-
+    <bean class="com.dzytsiuk.onlinestore.postprocess.SslPropertyPostProcessor"/>
 </beans>

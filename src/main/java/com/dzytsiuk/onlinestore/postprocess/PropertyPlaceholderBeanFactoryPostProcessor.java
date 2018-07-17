@@ -9,9 +9,10 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
+import static com.dzytsiuk.onlinestore.Starter.ENV;
+import static com.dzytsiuk.onlinestore.Starter.PROD;
+
 public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
-    private static final String ENV = "env";
-    private static final String PROD = "PROD";
     private static final String DEV = "DEV";
 
     private static final String JDBC_DATABASE_PREFIX = "JDBC_DATABASE_";
@@ -34,7 +35,6 @@ public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryP
                     } else if (env.equalsIgnoreCase(PROD)) {
                         setProdProperties(beanDefinition);
                     }
-
                 }
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException("Class not found " + beanClassName);

@@ -17,22 +17,15 @@ import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
 public class Starter {
+    public static final String ENV = "env";
+    public static final String PROD = "PROD";
     private static final String PORT_PARAMETER = "PORT";
     private static final int DEFAULT_PORT = 8080;
-    private static final String SSLFACTORY = "sslfactory";
-    private static final String SSL_FACTORY_VALUE = "org.postgresql.ssl.NonValidatingFactory";
-    private static final String SSL = "ssl";
 
 
     public static void main(String[] args) throws Exception {
         String contextFile = ClassLoader.getSystemClassLoader().getResource("context.xml").getPath();
         ApplicationContext applicationContext = new ClassPathApplicationContext(contextFile);
-
-        //datasource
-        BasicDataSource dataSource = applicationContext.getBean(BasicDataSource.class);
-        dataSource.addConnectionProperty(SSLFACTORY, SSL_FACTORY_VALUE);
-        dataSource.addConnectionProperty(SSL, String.valueOf(true));
-
 
         //service
         ProductService productService = applicationContext.getBean(ProductService.class);
