@@ -7,7 +7,6 @@ import com.dzytsiuk.onlinestore.service.ProductService;
 import com.dzytsiuk.onlinestore.web.filter.SecurityFilter;
 import com.dzytsiuk.onlinestore.web.filter.Utf8Filter;
 import com.dzytsiuk.onlinestore.web.servlet.*;
-import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
