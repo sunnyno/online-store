@@ -23,7 +23,7 @@ public class Starter {
 
 
     public static void main(String[] args) throws Exception {
-        String contextFile = ClassLoader.getSystemClassLoader().getResource("context.xml").getPath();
+        String contextFile =Starter.class.getClassLoader().getResource("context.xml").getPath();
         ApplicationContext applicationContext = new ClassPathApplicationContext(contextFile);
 
         //service
