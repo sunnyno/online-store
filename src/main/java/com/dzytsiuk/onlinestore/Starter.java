@@ -7,15 +7,16 @@ import com.dzytsiuk.onlinestore.service.ProductService;
 import com.dzytsiuk.onlinestore.web.filter.SecurityFilter;
 import com.dzytsiuk.onlinestore.web.filter.Utf8Filter;
 import com.dzytsiuk.onlinestore.web.servlet.*;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.DispatcherType;
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.util.EnumSet;
 
@@ -24,6 +25,10 @@ public class Starter {
     public static final String PROD = "PROD";
     private static final String PORT_PARAMETER = "PORT";
     private static final int DEFAULT_PORT = 8080;
+    private static final String SSLFACTORY = "sslfactory";
+    private static final String SSL_FACTORY_VALUE = "org.postgresql.ssl.NonValidatingFactory";
+    private static final String SSL = "ssl";
+
 
 
     public static void main(String[] args) throws Exception {
@@ -34,6 +39,13 @@ public class Starter {
         tmp.delete();
         resourceAsStream.close();
 
+        //PROD datasource
+        String env = System.getProperty(ENV);
+        if(env != null && env.equals(PROD)){
+            BasicDataSource dataSource = (BasicDataSource) applicationContext.getBean(DataSource.class);
+            dataSource.addConnectionProperty(SSLFACTORY, SSL_FACTORY_VALUE);
+            dataSource.addConnectionProperty(SSL, String.valueOf(true));
+        }
         //service
         ProductService productService = applicationContext.getBean(ProductService.class);
         SecurityService securityService = applicationContext.getBean(SecurityService.class);
