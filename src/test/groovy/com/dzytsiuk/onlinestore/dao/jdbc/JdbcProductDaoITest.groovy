@@ -1,10 +1,10 @@
 package com.dzytsiuk.onlinestore.dao.jdbc
 
-import com.dzytsiuk.ioc.context.ApplicationContext
-import com.dzytsiuk.ioc.context.ClassPathApplicationContext
 import com.dzytsiuk.onlinestore.entity.Product
 import org.apache.commons.dbcp.BasicDataSource
 import org.junit.Test
+import org.springframework.context.ApplicationContext
+import org.springframework.context.support.ClassPathXmlApplicationContext
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -12,8 +12,10 @@ import java.time.format.DateTimeFormatter
 import static org.junit.Assert.assertNotNull
 
 class JdbcProductDaoITest {
-    String contextFile = ClassLoader.getSystemClassLoader().getResource("context.xml").getPath();
-    ApplicationContext applicationContext = new ClassPathApplicationContext(contextFile);
+    static {
+        System.setProperty("properties.path", "/property/dev.application.properties")
+    }
+    ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml")
 
     @Test
     void getAllProductsTest() {

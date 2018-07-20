@@ -8,11 +8,11 @@ public class Utf8Filter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        filterChain.doFilter(servletRequest, servletResponse);
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        if(!httpServletRequest.getRequestURI().contains("/assets/")) {
+        if (!httpServletRequest.getRequestURI().contains("/assets/")) {
             servletResponse.setContentType("text/html;charset=utf-8");
         }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

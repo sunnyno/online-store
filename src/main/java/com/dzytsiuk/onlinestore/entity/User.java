@@ -5,14 +5,16 @@ import java.util.Objects;
 public class User {
     private long id;
     private String login;
-    private String password;
+    private int password;
+    private String salt;
 
     public User() {
     }
 
-    public User(String login, String password) {
+    public User(String login, int password, String salt) {
         this.login = login;
         this.password = password;
+        this.salt = salt;
     }
 
     public long getId() {
@@ -31,12 +33,20 @@ public class User {
         this.login = login;
     }
 
-    public String getPassword() {
+    public int getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(int password) {
         this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     @Override

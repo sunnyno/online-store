@@ -2,21 +2,20 @@ package com.dzytsiuk.onlinestore.web.servlet;
 
 import com.dzytsiuk.onlinestore.security.SecurityService;
 import com.dzytsiuk.onlinestore.security.Session;
-import com.dzytsiuk.onlinestore.web.templater.PageGenerator;
+import com.dzytsiuk.onlinestore.web.templater.PageProcessor;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 public class LoginServlet extends HttpServlet {
     private static final String LOGIN_PARAMETER_NAME = "login";
     private static final String PASSWORD_PARAMETER_NAME = "password";
+    private static final String USER_TOKEN_PARAMETER_NAME = "user-token";
     private SecurityService securityService;
 
 
@@ -27,26 +26,25 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.getWriter().println(PageGenerator.instance().getPage("login.html"));
+        PageProcessor.instance().process("login.html", new WebContext(req, resp, req.getServletContext()));
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String login = req.getParameter(LOGIN_PARAMETER_NAME);
         String password = req.getParameter(PASSWORD_PARAMETER_NAME);
-        Session session = securityService.auth(login, password);
+        Optional<Session> optionalSession = securityService.auth(login, password);
 
-        if (session.getToken() == null) {
-            Map<String, Object> responseMessage = new HashMap<>();
-            responseMessage.put("error", "Invalid login/password");
-            resp.getWriter().println(PageGenerator.instance().getPage("login.html", responseMessage));
+        if (!optionalSession.isPresent()) {
+            WebContext webContext = new WebContext(req, resp, req.getServletContext());
+            webContext.setVariable("errorMessage", "Invalid login/password");
+            PageProcessor.instance().process("login.html", webContext);
         } else {
-            Cookie cookie = new Cookie("user-token", session.getToken());
-            int secondsToExpire = (int) ChronoUnit.SECONDS.between(LocalDateTime.now(), session.getExpireDate());
+            Cookie cookie = new Cookie(USER_TOKEN_PARAMETER_NAME, optionalSession.get().getToken());
+            int secondsToExpire = securityService.getSessionTimeToLive();
             cookie.setMaxAge(secondsToExpire);
             cookie.setHttpOnly(true);
             resp.addCookie(cookie);
-            securityService.addSession(session);
             resp.sendRedirect("/products");
         }
     }

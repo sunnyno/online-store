@@ -3,9 +3,10 @@ package com.dzytsiuk.onlinestore.dao;
 import com.dzytsiuk.onlinestore.entity.User;
 
 import javax.sql.DataSource;
+import java.util.Optional;
 
 public interface UserDao {
-    User findByLogin(String login);
+    Optional<User> findByLogin(String login);
 
     void setDataSource(DataSource dataSource);
 

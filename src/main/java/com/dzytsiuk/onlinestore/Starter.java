@@ -1,7 +1,5 @@
 package com.dzytsiuk.onlinestore;
 
-import com.dzytsiuk.ioc.context.ApplicationContext;
-import com.dzytsiuk.ioc.context.ClassPathApplicationContext;
 import com.dzytsiuk.onlinestore.security.SecurityService;
 import com.dzytsiuk.onlinestore.service.ProductService;
 import com.dzytsiuk.onlinestore.web.filter.SecurityFilter;
@@ -12,17 +10,14 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.DispatcherType;
 import javax.sql.DataSource;
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.EnumSet;
 
 public class Starter {
-    public static final String ENV = "env";
-    public static final String PROD = "PROD";
     private static final String PORT_PARAMETER = "PORT";
     private static final int DEFAULT_PORT = 8080;
     private static final String SSLFACTORY = "sslfactory";
@@ -30,22 +25,13 @@ public class Starter {
     private static final String SSL = "ssl";
 
 
-
     public static void main(String[] args) throws Exception {
-        File tmp = new File("tmp-context.xml");
-        InputStream resourceAsStream = ClassLoader.getSystemClassLoader().getResourceAsStream("context.xml");
-        Files.copy(resourceAsStream, tmp.toPath());
-        ApplicationContext applicationContext = new ClassPathApplicationContext(tmp.getPath());
-        tmp.delete();
-        resourceAsStream.close();
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml");
 
-        //PROD datasource
-        String env = System.getProperty(ENV);
-        if(env != null && env.equals(PROD)){
-            BasicDataSource dataSource = (BasicDataSource) applicationContext.getBean(DataSource.class);
-            dataSource.addConnectionProperty(SSLFACTORY, SSL_FACTORY_VALUE);
-            dataSource.addConnectionProperty(SSL, String.valueOf(true));
-        }
+        BasicDataSource dataSource = (BasicDataSource) applicationContext.getBean(DataSource.class);
+        dataSource.addConnectionProperty(SSLFACTORY, SSL_FACTORY_VALUE);
+        dataSource.addConnectionProperty(SSL, String.valueOf(true));
+
         //service
         ProductService productService = applicationContext.getBean(ProductService.class);
         SecurityService securityService = applicationContext.getBean(SecurityService.class);

@@ -10,6 +10,7 @@ CREATE TABLE product (
 
 CREATE TABLE "user" (
   id            SERIAL PRIMARY KEY,
-  login          VARCHAR(50),
-  password      VARCHAR(100)
+  login         VARCHAR(50) UNIQUE,
+  password      INTEGER,
+  salt          VARCHAR(50)
 );

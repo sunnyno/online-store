@@ -3,7 +3,8 @@ package com.dzytsiuk.onlinestore.web.servlet;
 
 import com.dzytsiuk.onlinestore.entity.Product;
 import com.dzytsiuk.onlinestore.service.ProductService;
-import com.dzytsiuk.onlinestore.web.templater.PageGenerator;
+import com.dzytsiuk.onlinestore.web.templater.PageProcessor;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,13 +18,11 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HashMap<String, Object> hashMap = new HashMap<>();
         List<Product> products = productService.findAll();
-        hashMap.put("products", products);
-        response.setContentType("text/html;charset=utf-8");
+        WebContext webContext = new WebContext(request, response, request.getServletContext());
+        webContext.setVariable("products", products);
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("products.html", hashMap));
-
+        PageProcessor.instance().process("products.html", webContext);
     }
 
     public void setProductService(ProductService productService) {

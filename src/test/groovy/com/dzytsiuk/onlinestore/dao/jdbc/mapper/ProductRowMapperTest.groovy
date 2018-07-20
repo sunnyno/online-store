@@ -1,13 +1,13 @@
 package com.dzytsiuk.onlinestore.dao.jdbc.mapper
 
-import com.dzytsiuk.onlinestore.dao.jdbc.mapper.ProductRowMapper
 import com.dzytsiuk.onlinestore.entity.Product
 import org.junit.Test
 
 import java.sql.ResultSet
 import java.sql.Timestamp
 import java.time.LocalDateTime
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.Assert.assertEquals
 
 class ProductRowMapperTest {
 

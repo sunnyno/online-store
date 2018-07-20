@@ -3,7 +3,8 @@ package com.dzytsiuk.onlinestore.web.servlet;
 
 import com.dzytsiuk.onlinestore.entity.Product;
 import com.dzytsiuk.onlinestore.service.ProductService;
-import com.dzytsiuk.onlinestore.web.templater.PageGenerator;
+import com.dzytsiuk.onlinestore.web.templater.PageProcessor;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ public class AddProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(PageGenerator.instance().getPage("addProduct.html"));
+        PageProcessor.instance().process("addProduct.html", new WebContext(request, response, request.getServletContext()));
     }
 
     @Override

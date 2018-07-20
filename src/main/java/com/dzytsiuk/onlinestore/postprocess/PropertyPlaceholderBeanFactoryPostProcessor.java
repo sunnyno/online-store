@@ -1,70 +1,54 @@
 package com.dzytsiuk.onlinestore.postprocess;
 
-import com.dzytsiuk.ioc.context.postprocessing.BeanFactoryPostProcessor;
-import com.dzytsiuk.ioc.entity.BeanDefinition;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.PropertyValue;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.TypedStringValue;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Properties;
-
-import static com.dzytsiuk.onlinestore.Starter.ENV;
-import static com.dzytsiuk.onlinestore.Starter.PROD;
+import java.util.*;
 
 public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
-    private static final String DEV = "DEV";
-
-    private static final String JDBC_DATABASE_PREFIX = "JDBC_DATABASE_";
-
-    private static final String DBCONFIG_DIR = "/dbconfig/";
-    private static final String DEV_APPLICATION_PROPERTY_FILE = "dev.application.properties";
+    private static final String PROPERTIES_PATH_PARAMETER_NAME = "properties.path";
     private static final String PLACEHOLDER_PREFIX = "${";
 
 
     @Override
-    public void postProcessBeanFactory(List<BeanDefinition> beanDefinitionList) {
-        beanDefinitionList.forEach(beanDefinition -> {
-            String beanClassName = beanDefinition.getBeanClassName();
-            try {
-                Class<?> clazz = Class.forName(beanClassName);
-                if (BasicDataSource.class.isAssignableFrom(clazz)) {
-                    String env = System.getProperty(ENV);
-                    if (env == null || env.equalsIgnoreCase(DEV)) {
-                        setDevProperties(beanDefinition);
-                    } else if (env.equalsIgnoreCase(PROD)) {
-                        setProdProperties(beanDefinition);
-                    }
-                }
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Class not found " + beanClassName);
-            }
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
+        String[] beanDefinitionNames = configurableListableBeanFactory.getBeanDefinitionNames();
 
-        });
-    }
-
-    private void setProdProperties(BeanDefinition beanDefinition) {
-        beanDefinition.getDependencies().forEach((key, value) -> {
-            if (value.startsWith(PLACEHOLDER_PREFIX)) {
-                String propertyName = JDBC_DATABASE_PREFIX + key.toUpperCase();
-                beanDefinition.getDependencies().put(key, System.getenv().get(propertyName));
-            }
-        });
-    }
-
-    private void setDevProperties(BeanDefinition beanDefinition) {
-        try (InputStream resourceAsStream = getClass().getResourceAsStream(DBCONFIG_DIR + (
-                DEV_APPLICATION_PROPERTY_FILE))) {
+        String propertiesPath = System.getProperty(PROPERTIES_PATH_PARAMETER_NAME);
+        try (InputStream resourceAsStream = getClass().getResourceAsStream(propertiesPath)) {
             Properties properties = new Properties();
             properties.load(resourceAsStream);
-            beanDefinition.getDependencies().forEach((key, value) -> {
-                if (value.startsWith(PLACEHOLDER_PREFIX)) {
-                    beanDefinition.getDependencies().put(key, properties.getProperty(key));
+            Arrays.stream(beanDefinitionNames).forEach(beanDefinitionName ->
+            {
+                BeanDefinition beanDefinition = configurableListableBeanFactory.getBeanDefinition(beanDefinitionName);
+                MutablePropertyValues propertyValues = beanDefinition.getPropertyValues();
+                for (PropertyValue propertyValue : propertyValues.getPropertyValues()) {
+                    Object value = propertyValue.getValue();
+                    if (value instanceof TypedStringValue) {
+                        TypedStringValue typedStringValue = (TypedStringValue) value;
+                        String contextValue = typedStringValue.getValue();
+                        if (contextValue.startsWith(PLACEHOLDER_PREFIX)) {
+                            String key = propertyValue.getName();
+                            String realValue = properties.getProperty(key);
+                            if (realValue.startsWith(PLACEHOLDER_PREFIX)) {
+                                realValue = System.getenv().get(contextValue.substring(contextValue.indexOf(PLACEHOLDER_PREFIX),
+                                        contextValue.indexOf('}')));
+                            }
+                            propertyValues.addPropertyValue(new PropertyValue(key, realValue));
+                        }
+                    }
                 }
             });
         } catch (IOException e) {
-            throw new RuntimeException("Error reading properties ", e);
+            throw new RuntimeException("Error getting properties", e);
         }
-    }
 
+    }
 }

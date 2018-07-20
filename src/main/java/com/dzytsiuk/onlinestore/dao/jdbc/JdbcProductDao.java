@@ -4,27 +4,29 @@ package com.dzytsiuk.onlinestore.dao.jdbc;
 import com.dzytsiuk.onlinestore.dao.ProductDao;
 import com.dzytsiuk.onlinestore.dao.jdbc.mapper.ProductRowMapper;
 import com.dzytsiuk.onlinestore.entity.Product;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcProductDao implements ProductDao {
-
     private static final ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
+    private static final String FIND_ALL_SQL = "select id, creation_date, name, price from product;";
+    private static final String SAVE_SQL = "insert into product(creation_date, name, price) values (?,?,?);";
+    private static final String DELETE_SQL = "delete from  product where product.name = ?";
+    private static final Logger logger = LoggerFactory.getLogger(ProductDao.class);
     private DataSource dataSource;
 
     @Override
     public List<Product> findAll() {
-        String query = "select id, creation_date, name, price from product;";
+
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL);
              ResultSet resultSet = preparedStatement.executeQuery();) {
-            System.out.println("Executing " + query);
+            logger.info("Executing {}", FIND_ALL_SQL);
             List<Product> products = new ArrayList<>();
             while (resultSet.next()) {
                 products.add(PRODUCT_ROW_MAPPER.mapRow(resultSet));
@@ -38,11 +40,12 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     public void save(Product product) {
-        String query = "insert into product(creation_date, name, price) values ('" + product.getCreationDate()
-                + "', '" + product.getName() + "', " + product.getPrice() + ");";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-            System.out.println("Executing " + query);
+             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL)) {
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(product.getCreationDate()));
+            preparedStatement.setString(2, product.getName());
+            preparedStatement.setDouble(3, product.getPrice());
+            logger.info("Executing {}", SAVE_SQL);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error inserting product " + product.getName(), e);
@@ -52,10 +55,10 @@ public class JdbcProductDao implements ProductDao {
 
 
     void delete(Product product) {
-        String query = "delete from  product where product.name = '" + product.getName() + "';";
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            System.out.println("Executing " + query);
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
+            preparedStatement.setString(1, product.getName());
+            logger.info("Executing {}", DELETE_SQL);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting product " + product.getName(), e);

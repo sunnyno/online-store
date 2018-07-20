@@ -10,9 +10,10 @@ import static org.junit.Assert.assertEquals
 class UserRowMapperTest {
     @Test
     void mapRowTest() {
-        def rsMock = [next     : {true},
-                      getString: { password -> "pass" }] as ResultSet
-        User expectedUser = new User(login: 'zhenya', password: "pass")
+        def rsMock = [next     : { true },
+                      getInt   : { password -> 1 },
+                      getString: { salt -> "salt" }] as ResultSet
+        User expectedUser = new User(login: 'zhenya', password: 1, salt: "sal")
         assertEquals(expectedUser, new UserRowMapper().mapRow(rsMock, "zhenya"))
     }
 }
