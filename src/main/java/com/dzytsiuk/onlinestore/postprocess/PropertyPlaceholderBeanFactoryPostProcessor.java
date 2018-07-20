@@ -38,8 +38,10 @@ public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryP
                             String key = propertyValue.getName();
                             String realValue = properties.getProperty(key);
                             if (realValue.startsWith(PLACEHOLDER_PREFIX)) {
-                                realValue = System.getenv().get(realValue.substring(realValue.indexOf(PLACEHOLDER_PREFIX)+1,
-                                        realValue.indexOf('}')));
+                                String substring = realValue.substring(realValue.indexOf(PLACEHOLDER_PREFIX) + 1,
+                                        realValue.indexOf('}'));
+                                System.out.println(substring);
+                                realValue = System.getenv().get(substring);
                             }
                             propertyValues.addPropertyValue(new PropertyValue(key, realValue));
                         }
