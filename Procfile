@@ -1,1 +1,1 @@
-web: java -Dspring.profiles.active=prod,default -jar target/online-store-1.0-SNAPSHOT-jar-with-dependencies.jar
+web: java -cp src/main -Dspring.profiles.active=prod -jar target/online-store-1.0-SNAPSHOT-jar-with-dependencies.jar

@@ -20,7 +20,6 @@ public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryP
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
         String[] beanDefinitionNames = configurableListableBeanFactory.getBeanDefinitionNames();
-        System.out.println(propertyPath);
         try (InputStream resourceAsStream = getClass().getResourceAsStream(propertyPath)) {
             Properties properties = new Properties();
             properties.load(resourceAsStream);
@@ -35,15 +34,14 @@ public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryP
                         String contextValue = typedStringValue.getValue();
                         if (contextValue.startsWith(PLACEHOLDER_PREFIX)) {
                             String key = propertyValue.getName();
-                            String realValue = properties.getProperty(key);
-                            //if no value found in property file look into system properties
-                            if (realValue == null) {
+                            String replacingValue = properties.getProperty(key);
+                            //unable to find property in a file thus look into system properties
+                            if (replacingValue == null) {
                                 String substring = contextValue.substring(contextValue.indexOf('{')+1,
                                         contextValue.indexOf('}'));
-                                System.out.println(substring);
-                                realValue = System.getenv().get(substring);
+                                replacingValue = System.getenv().get(substring);
                             }
-                            propertyValues.addPropertyValue(key, realValue);
+                            propertyValues.addPropertyValue(key, replacingValue);
                         }
                     }
                 }
