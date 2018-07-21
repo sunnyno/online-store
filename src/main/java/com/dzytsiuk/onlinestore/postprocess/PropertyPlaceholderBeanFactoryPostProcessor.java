@@ -13,16 +13,14 @@ import java.io.InputStream;
 import java.util.*;
 
 public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
-    private static final String PROPERTIES_PATH_PARAMETER_NAME = "properties.path";
     private static final String PLACEHOLDER_PREFIX = "${";
+    private String propertyPath;
 
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
         String[] beanDefinitionNames = configurableListableBeanFactory.getBeanDefinitionNames();
-
-        String propertiesPath = System.getProperty(PROPERTIES_PATH_PARAMETER_NAME);
-        try (InputStream resourceAsStream = getClass().getResourceAsStream(propertiesPath)) {
+        try (InputStream resourceAsStream = getClass().getResourceAsStream(propertyPath)) {
             Properties properties = new Properties();
             properties.load(resourceAsStream);
             Arrays.stream(beanDefinitionNames).forEach(beanDefinitionName ->
@@ -37,13 +35,14 @@ public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryP
                         if (contextValue.startsWith(PLACEHOLDER_PREFIX)) {
                             String key = propertyValue.getName();
                             String realValue = properties.getProperty(key);
-                            if (realValue.startsWith(PLACEHOLDER_PREFIX)) {
-                                String substring = realValue.substring(realValue.indexOf('{')+1,
-                                        realValue.indexOf('}'));
+                            //if no value found in property file look into system properties
+                            if (realValue == null) {
+                                String substring = contextValue.substring(contextValue.indexOf('{')+1,
+                                        contextValue.indexOf('}'));
                                 System.out.println(substring);
                                 realValue = System.getenv().get(substring);
                             }
-                            propertyValues.addPropertyValue(new PropertyValue(key, realValue));
+                            propertyValues.addPropertyValue(key, realValue);
                         }
                     }
                 }
@@ -53,4 +52,9 @@ public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryP
         }
 
     }
+
+    public void setPropertyPath(String propertyPath) {
+        this.propertyPath = propertyPath;
+    }
+
 }

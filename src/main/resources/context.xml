@@ -3,30 +3,46 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	   					   http://www.springframework.org/schema/beans/spring-beans.xsd">
     <!--datasource-->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-    </bean>
+    <beans profile="dev">
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.username}"/>
+            <property name="password" value="${jdbc.password}"/>
+        </bean>
+        <!--post process-->
+        <bean class="com.dzytsiuk.onlinestore.postprocess.PropertyPlaceholderBeanFactoryPostProcessor">
+            <property name="propertyPath" value="/property/dev.application.properties"/>
+        </bean>
+    </beans>
+    <beans profile="prod">
+        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+            <property name="url" value="${JDBC_DATABASE_URL}"/>
+            <property name="username" value="${JDBC_DATABASE_USERNAME}"/>
+            <property name="password" value="${JDBC_DATABASE_PASSWORD}"/>
+        </bean>
+        <!--post process-->
+        <bean class="com.dzytsiuk.onlinestore.postprocess.PropertyPlaceholderBeanFactoryPostProcessor">
+            <property name="propertyPath" value="classes/property/prod.application.properties"/>
+        </bean>
+    </beans>
     <!--dao-->
-    <bean id="productDao" class="com.dzytsiuk.onlinestore.dao.jdbc.JdbcProductDao">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-    <bean id="userDao" class="com.dzytsiuk.onlinestore.dao.jdbc.JdbcUserDao">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
+    <beans profile="dev,prod">
+        <bean id="productDao" class="com.dzytsiuk.onlinestore.dao.jdbc.JdbcProductDao">
+            <property name="dataSource" ref="dataSource"/>
+        </bean>
+        <bean id="userDao" class="com.dzytsiuk.onlinestore.dao.jdbc.JdbcUserDao">
+            <property name="dataSource" ref="dataSource"/>
+        </bean>
 
-    <!--service-->
-    <bean id="productService" class="com.dzytsiuk.onlinestore.service.DefaultProductService">
-        <property name="productDao" ref="productDao"/>
-    </bean>
-    <bean id="userService" class="com.dzytsiuk.onlinestore.service.DefaultUserService">
-        <property name="userDao" ref="userDao"/>
-    </bean>
-    <bean id="securityService" class="com.dzytsiuk.onlinestore.security.DefaultSecurityService">
-        <property name="userService" ref="userService"/>
-    </bean>
-
-    <!--post process-->
-    <bean class="com.dzytsiuk.onlinestore.postprocess.PropertyPlaceholderBeanFactoryPostProcessor"/>
+        <!--service-->
+        <bean id="productService" class="com.dzytsiuk.onlinestore.service.DefaultProductService">
+            <property name="productDao" ref="productDao"/>
+        </bean>
+        <bean id="userService" class="com.dzytsiuk.onlinestore.service.DefaultUserService">
+            <property name="userDao" ref="userDao"/>
+        </bean>
+        <bean id="securityService" class="com.dzytsiuk.onlinestore.security.DefaultSecurityService">
+            <property name="userService" ref="userService"/>
+        </bean>
+    </beans>
 </beans>

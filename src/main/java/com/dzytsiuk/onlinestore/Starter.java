@@ -26,6 +26,7 @@ public class Starter {
 
 
     public static void main(String[] args) throws Exception {
+
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml");
 
         BasicDataSource dataSource = (BasicDataSource) applicationContext.getBean(DataSource.class);

@@ -1,1 +1,1 @@
-web: java -Dproperties.path=/property/prod.application.properties -jar target/online-store-1.0-SNAPSHOT-jar-with-dependencies.jar
+web: java -Dspring.profiles.active=prod,default -jar target/online-store-1.0-SNAPSHOT-jar-with-dependencies.jar
