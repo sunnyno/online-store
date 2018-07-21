@@ -22,7 +22,7 @@
         </bean>
         <!--post process-->
         <bean class="com.dzytsiuk.onlinestore.postprocess.PropertyPlaceholderBeanFactoryPostProcessor">
-            <property name="propertyPath" value="classes/property/prod.application.properties"/>
+            <property name="propertyPath" value="/property/prod.application.properties"/>
         </bean>
     </beans>
     <!--dao-->
