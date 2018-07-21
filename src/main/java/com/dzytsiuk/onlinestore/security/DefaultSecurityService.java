@@ -3,17 +3,13 @@ package com.dzytsiuk.onlinestore.security;
 import com.dzytsiuk.onlinestore.entity.User;
 import com.dzytsiuk.onlinestore.service.UserService;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class DefaultSecurityService implements SecurityService {
-
-    private static final String APP_PROPERTIES_PATH = "/property/application.properties";
-    private static final String TTL_PROPERTY_NAME = "ttl";
-
     private UserService userService;
     private List<Session> sessions = new ArrayList<>();
+    private int ttl;
 
     @Override
     public boolean isValid(String token) {
@@ -63,13 +59,10 @@ public class DefaultSecurityService implements SecurityService {
 
     @Override
     public int getSessionTimeToLive() {
-        try {
-            Properties properties = new Properties();
-            properties.load(getClass().getResourceAsStream(APP_PROPERTIES_PATH));
-            return Integer.parseInt(properties.getProperty(TTL_PROPERTY_NAME));
-        } catch (IOException e) {
-            throw new RuntimeException("Error getting application properties", e);
-        }
+        return ttl;
     }
 
+    public void setTtl(int ttl) {
+        this.ttl = ttl;
+    }
 }

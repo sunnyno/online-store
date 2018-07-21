@@ -34,18 +34,20 @@ public class LoginServlet extends HttpServlet {
         String login = req.getParameter(LOGIN_PARAMETER_NAME);
         String password = req.getParameter(PASSWORD_PARAMETER_NAME);
         Optional<Session> optionalSession = securityService.auth(login, password);
-
-        if (!optionalSession.isPresent()) {
-            WebContext webContext = new WebContext(req, resp, req.getServletContext());
-            webContext.setVariable("errorMessage", "Invalid login/password");
-            PageProcessor.instance().process("login.html", webContext);
-        } else {
+        optionalSession.ifPresent(token -> {
             Cookie cookie = new Cookie(USER_TOKEN_PARAMETER_NAME, optionalSession.get().getToken());
             int secondsToExpire = securityService.getSessionTimeToLive();
             cookie.setMaxAge(secondsToExpire);
             cookie.setHttpOnly(true);
             resp.addCookie(cookie);
-            resp.sendRedirect("/products");
-        }
+            try {
+                resp.sendRedirect("/products");
+            } catch (IOException e) {
+                throw new RuntimeException("Redirection failed", e);
+            }
+        });
+        WebContext webContext = new WebContext(req, resp, req.getServletContext());
+        webContext.setVariable("errorMessage", "Invalid login/password");
+        PageProcessor.instance().process("login.html", webContext);
     }
 }

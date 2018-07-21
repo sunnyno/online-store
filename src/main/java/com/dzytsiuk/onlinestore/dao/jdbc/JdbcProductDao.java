@@ -22,10 +22,9 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     public List<Product> findAll() {
-
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL);
-             ResultSet resultSet = preparedStatement.executeQuery();) {
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             logger.info("Executing {}", FIND_ALL_SQL);
             List<Product> products = new ArrayList<>();
             while (resultSet.next()) {
@@ -35,7 +34,6 @@ public class JdbcProductDao implements ProductDao {
         } catch (SQLException e) {
             throw new RuntimeException("Error getting products", e);
         }
-
     }
 
     @Override

@@ -10,9 +10,7 @@
             <property name="password" value="${jdbc.password}"/>
         </bean>
         <!--post process-->
-        <bean class="com.dzytsiuk.onlinestore.postprocess.PropertyPlaceholderBeanFactoryPostProcessor">
-            <property name="propertyPath" value="/property/dev.application.properties"/>
-        </bean>
+        <bean class="com.dzytsiuk.onlinestore.postprocess.PropertyPlaceholderBeanFactoryPostProcessor"/>
     </beans>
     <beans profile="prod">
         <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -21,9 +19,7 @@
             <property name="password" value="${JDBC_DATABASE_PASSWORD}"/>
         </bean>
         <!--post process-->
-        <bean class="com.dzytsiuk.onlinestore.postprocess.PropertyPlaceholderBeanFactoryPostProcessor">
-            <property name="propertyPath" value="/property/prod.application.properties"/>
-        </bean>
+        <bean class="com.dzytsiuk.onlinestore.postprocess.PropertyPlaceholderBeanFactoryPostProcessor"/>
     </beans>
     <!--dao-->
     <beans profile="dev,prod">
@@ -43,6 +39,7 @@
         </bean>
         <bean id="securityService" class="com.dzytsiuk.onlinestore.security.DefaultSecurityService">
             <property name="userService" ref="userService"/>
+            <property name="ttl" value="${ttl}"/>
         </bean>
     </beans>
 </beans>

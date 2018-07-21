@@ -15,23 +15,25 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.DispatcherType;
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.util.EnumSet;
+import java.util.Properties;
 
 public class Starter {
-    private static final String PORT_PARAMETER = "PORT";
-    private static final int DEFAULT_PORT = 8080;
     private static final String SSLFACTORY = "sslfactory";
-    private static final String SSL_FACTORY_VALUE = "org.postgresql.ssl.NonValidatingFactory";
     private static final String SSL = "ssl";
-
+    private static final String PORT = "port";
 
     public static void main(String[] args) throws Exception {
-
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml");
-
-        BasicDataSource dataSource = (BasicDataSource) applicationContext.getBean(DataSource.class);
-        dataSource.addConnectionProperty(SSLFACTORY, SSL_FACTORY_VALUE);
-        dataSource.addConnectionProperty(SSL, String.valueOf(true));
+        Properties properties = getEnvironmentProperties();
+        //datasource ssl config
+        String sslProperty = properties.getProperty(SSL);
+        if (sslProperty != null) {
+            BasicDataSource dataSource = (BasicDataSource) applicationContext.getBean(DataSource.class);
+            dataSource.addConnectionProperty(SSL, sslProperty);
+            dataSource.addConnectionProperty(SSLFACTORY, properties.getProperty(SSLFACTORY));
+        }
 
         //service
         ProductService productService = applicationContext.getBean(ProductService.class);
@@ -52,19 +54,22 @@ public class Starter {
         context.addServlet(new ServletHolder(new LogoutServlet(securityService)), "/logout");
 
         //filter
-        context.addFilter(new FilterHolder(new SecurityFilter(securityService)), "/*", EnumSet.of(DispatcherType.REQUEST));
-        context.addFilter(new FilterHolder(new Utf8Filter()), "/*", EnumSet.of(DispatcherType.REQUEST));
-
-        //port
-        int port = DEFAULT_PORT;
-        String systemPort = System.getenv().get(PORT_PARAMETER);
-        if (systemPort != null) {
-            port = Integer.parseInt(systemPort);
-        }
+        context.addFilter(new FilterHolder(new SecurityFilter(securityService)), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
+        context.addFilter(new FilterHolder(new Utf8Filter()), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
 
         //start
-        Server server = new Server(port);
+        Server server = new Server(Integer.parseInt(properties.getProperty(PORT)));
         server.setHandler(context);
         server.start();
+    }
+
+    private static Properties getEnvironmentProperties() {
+        try {
+            Properties properties = new Properties();
+            properties.load(Starter.class.getResourceAsStream(System.getProperty("properties.path")));
+            return properties;
+        } catch (IOException e) {
+            throw new RuntimeException("Error loading environment properties", e);
+        }
     }
 }

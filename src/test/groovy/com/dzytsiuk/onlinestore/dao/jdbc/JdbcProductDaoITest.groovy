@@ -2,6 +2,8 @@ package com.dzytsiuk.onlinestore.dao.jdbc
 
 import com.dzytsiuk.onlinestore.entity.Product
 import org.apache.commons.dbcp.BasicDataSource
+import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 import org.springframework.context.ApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext
@@ -12,10 +14,14 @@ import java.time.format.DateTimeFormatter
 import static org.junit.Assert.assertNotNull
 
 class JdbcProductDaoITest {
-    static {
-        System.setProperty("properties.path", "/property/dev.application.properties")
-    }
+
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml")
+
+    @BeforeClass
+    static void setSystemProperties(){
+        System.setProperty("spring.profiles.active", "dev")
+        System.setProperty("properties.path","/property/dev.application.properties")
+    }
 
     @Test
     void getAllProductsTest() {

@@ -1,6 +1,5 @@
 package com.dzytsiuk.onlinestore.dao.jdbc;
 
-import com.dzytsiuk.onlinestore.dao.ProductDao;
 import com.dzytsiuk.onlinestore.dao.UserDao;
 import com.dzytsiuk.onlinestore.dao.jdbc.mapper.UserRowMapper;
 import com.dzytsiuk.onlinestore.entity.User;
