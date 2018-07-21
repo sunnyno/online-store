@@ -58,7 +58,11 @@ public class Starter {
         context.addFilter(new FilterHolder(new Utf8Filter()), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
 
         //start
-        Server server = new Server(Integer.parseInt(properties.getProperty(PORT)));
+        String port = properties.getProperty(PORT);
+        if(port == null){
+            port = System.getProperty(PORT);
+        }
+        Server server = new Server(Integer.parseInt(port));
         server.setHandler(context);
         server.start();
     }
