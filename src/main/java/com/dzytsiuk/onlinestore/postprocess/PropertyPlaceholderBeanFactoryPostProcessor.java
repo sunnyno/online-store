@@ -20,6 +20,7 @@ public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryP
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
         String[] beanDefinitionNames = configurableListableBeanFactory.getBeanDefinitionNames();
+        System.out.println(propertyPath);
         try (InputStream resourceAsStream = getClass().getResourceAsStream(propertyPath)) {
             Properties properties = new Properties();
             properties.load(resourceAsStream);
