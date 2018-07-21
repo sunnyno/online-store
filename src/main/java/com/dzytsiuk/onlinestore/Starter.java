@@ -60,7 +60,7 @@ public class Starter {
         //start
         String port = properties.getProperty(PORT);
         if(port == null){
-            port = System.getProperty(PORT);
+            port = System.getenv().get(PORT.toUpperCase());
         }
         Server server = new Server(Integer.parseInt(port));
         server.setHandler(context);
