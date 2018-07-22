@@ -1,7 +1,10 @@
 package com.dzytsiuk.onlinestore.dao.jdbc
 
+import com.dzytsiuk.onlinestore.dao.UserDao
+import com.dzytsiuk.onlinestore.dao.jdbc.datasource.DBInitializer
 import com.dzytsiuk.onlinestore.entity.User
-import org.apache.commons.dbcp.BasicDataSource
+import org.dbunit.dataset.IDataSet
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.springframework.context.ApplicationContext
@@ -11,20 +14,32 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 
 class JdbcUserDaoITest {
+    static final String PROPERTY_FILE_PATH = "/property/test.application.properties"
+    static DBInitializer dbInitializer = new DBInitializer()
+    static final String SCHEMA_FILE_PATH = "/db/schema.sql"
+    static final String DATASET_FILE_PATH = "/db/dataset/user-dataset.xml"
+
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml")
 
     @BeforeClass
-    static void setSystemProperties() {
-        System.setProperty("spring.profiles.active", "dev")
-        System.setProperty("properties.path","/property/dev.application.properties")
+    static void setUp() {
+        System.setProperty("spring.profiles.active", "test")
+        System.setProperty("properties.path", PROPERTY_FILE_PATH)
+        dbInitializer.createSchema(PROPERTY_FILE_PATH, SCHEMA_FILE_PATH)
     }
+
+    @Before
+    void importDataSet() throws Exception {
+        IDataSet dataSet = dbInitializer.readDataSet(DATASET_FILE_PATH)
+        dbInitializer.cleanlyInsert(dataSet)
+    }
+
 
     @Test
     void findByLoginTest() {
-        def expectedUser = new User(login: 'zhenya', password: -639310962, salt: "e6bbb2df-cd76-46b5-9e38-2d9bac3475fa")
-        JdbcUserDao jdbcUserDao = new JdbcUserDao()
-        jdbcUserDao.setDataSource(applicationContext.getBean(BasicDataSource.class))
-        def actualUser = jdbcUserDao.findByLogin("zhenya") as Optional<User>
+        def expectedUser = new User(login: 'zhenya', password: 1234, salt: "salt")
+        def userDao = applicationContext.getBean(UserDao.class)
+        def actualUser = userDao.findByLogin("zhenya") as Optional<User>
         assertTrue(actualUser.isPresent())
         assertEquals(expectedUser, actualUser.get())
     }

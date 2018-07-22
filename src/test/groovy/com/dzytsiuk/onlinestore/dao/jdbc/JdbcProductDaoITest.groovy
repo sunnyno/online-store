@@ -1,7 +1,9 @@
 package com.dzytsiuk.onlinestore.dao.jdbc
 
+import com.dzytsiuk.onlinestore.dao.ProductDao
+import com.dzytsiuk.onlinestore.dao.jdbc.datasource.DBInitializer
 import com.dzytsiuk.onlinestore.entity.Product
-import org.apache.commons.dbcp.BasicDataSource
+import org.dbunit.dataset.IDataSet
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -15,49 +17,50 @@ import static org.junit.Assert.assertNotNull
 
 class JdbcProductDaoITest {
 
+    static final String PROPERTY_FILE_PATH = "/property/test.application.properties"
+    static DBInitializer dbInitializer = new DBInitializer()
+    static final String SCHEMA_FILE_PATH = "/db/schema.sql"
+    static final String DATASET_FILE_PATH = "/db/dataset/product-dataset.xml"
+
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml")
 
+
     @BeforeClass
-    static void setSystemProperties(){
-        System.setProperty("spring.profiles.active", "dev")
-        System.setProperty("properties.path","/property/dev.application.properties")
+    static void setUp() {
+        System.setProperty("spring.profiles.active", "test")
+        System.setProperty("properties.path", PROPERTY_FILE_PATH)
+        dbInitializer.createSchema(PROPERTY_FILE_PATH, SCHEMA_FILE_PATH)
+    }
+
+    @Before
+    void importDataSet() throws Exception {
+        IDataSet dataSet = dbInitializer.readDataSet(DATASET_FILE_PATH)
+        dbInitializer.cleanlyInsert(dataSet)
     }
 
     @Test
     void getAllProductsTest() {
         def time = "2018-06-12 17:52:23.023187"
         def now = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"));
-        def product1 = new Product(creationDate: now, name: "test", price: 100.5 as double)
-        def product2 = new Product(creationDate: now, name: "test1", price: 27.00 as double)
+        def product1 = new Product(creationDate: now, name: "cake", price: 100.5 as double)
+        def product2 = new Product(creationDate: now, name: "cake2", price: 300.00 as double)
         def expectedProducts = [product1, product2]
-        System.setProperty("properties", "dev.application.properties")
 
-        JdbcProductDao jdbcProductDao = new JdbcProductDao()
-        jdbcProductDao.setDataSource(applicationContext.getBean(BasicDataSource.class))
-        jdbcProductDao.save(product1)
-        jdbcProductDao.save(product2)
-        def actualProducts = jdbcProductDao.findAll()
+        def productDao = applicationContext.getBean(ProductDao.class)
+        def actualProducts = productDao.findAll()
         expectedProducts.each {
             assertNotNull(actualProducts.find { it })
         }
-        jdbcProductDao.delete(product1)
-        jdbcProductDao.delete(product2)
-
     }
 
     @Test
     void insertProductTest() {
         def time = "2018-06-12 18:46:04.407570"
         def now = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))
-        def expectedProduct = new Product(id: -1, creationDate: now, name: "test", price: 100 as double)
-
-        System.setProperty("properties", "prod.application.properties")
-        JdbcProductDao jdbcProductDao = new JdbcProductDao()
-        jdbcProductDao.setDataSource(applicationContext.getBean(BasicDataSource.class))
-        jdbcProductDao.save(expectedProduct)
-
-        def actualProducts = jdbcProductDao.findAll()
+        def expectedProduct = new Product(creationDate: now, name: "test", price: 100 as double)
+        def productDao = applicationContext.getBean(ProductDao.class)
+        productDao.save(expectedProduct)
+        def actualProducts = productDao.findAll()
         assertNotNull(actualProducts.find { expectedProduct })
-        jdbcProductDao.delete(expectedProduct)
     }
 }

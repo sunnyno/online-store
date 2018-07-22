@@ -1,6 +1,5 @@
 package com.dzytsiuk.onlinestore.service
 
-import com.dzytsiuk.onlinestore.dao.ProductDao
 import com.dzytsiuk.onlinestore.dao.UserDao
 import com.dzytsiuk.onlinestore.entity.User
 import org.junit.Test

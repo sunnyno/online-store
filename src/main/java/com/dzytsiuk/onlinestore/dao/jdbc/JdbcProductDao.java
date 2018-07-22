@@ -52,17 +52,6 @@ public class JdbcProductDao implements ProductDao {
     }
 
 
-    void delete(Product product) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
-            preparedStatement.setString(1, product.getName());
-            logger.info("Executing {}", DELETE_SQL);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error deleting product " + product.getName(), e);
-        }
-    }
-
     @Override
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
