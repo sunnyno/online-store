@@ -16,7 +16,6 @@ public class JdbcProductDao implements ProductDao {
     private static final ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
     private static final String FIND_ALL_SQL = "select id, creation_date, name, price from product;";
     private static final String SAVE_SQL = "insert into product(creation_date, name, price) values (?,?,?);";
-    private static final String DELETE_SQL = "delete from  product where product.name = ?";
     private static final Logger logger = LoggerFactory.getLogger(ProductDao.class);
     private DataSource dataSource;
 

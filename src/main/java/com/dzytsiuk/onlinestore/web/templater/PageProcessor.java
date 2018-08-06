@@ -20,7 +20,6 @@ public class PageProcessor {
     public static PageProcessor instance() {
         if (pageProcessor == null)
             pageProcessor = new PageProcessor();
-
         return pageProcessor;
     }
 

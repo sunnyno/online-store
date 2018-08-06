@@ -28,21 +28,20 @@ public class DefaultSecurityService implements SecurityService {
     @Override
     public Optional<Session> auth(String login, String password) {
         Optional<User> optionalUser = userService.findByLogin(login);
-        if (!optionalUser.isPresent()) {
-            return Optional.empty();
-        }
-        User user = optionalUser.get();
-        int hashedPass = Objects.hash(password, user.getSalt());
-        int userPass = user.getPassword();
-        if (userPass == hashedPass) {
-            Session session = new Session();
-            String token = UUID.randomUUID().toString();
-            session.setUser(user);
-            session.setToken(token);
-            int ttl = getSessionTimeToLive();
-            session.setExpireDate(ttl);
-            sessions.add(session);
-            return Optional.of(session);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            int hashedPass = Objects.hash(password, user.getSalt());
+            int userPass = user.getPassword();
+            if (userPass == hashedPass) {
+                Session session = new Session();
+                String token = UUID.randomUUID().toString();
+                session.setUser(user);
+                session.setToken(token);
+                int ttl = getSessionTimeToLive();
+                session.setExpireDate(ttl);
+                sessions.add(session);
+                return Optional.of(session);
+            }
         }
         return Optional.empty();
     }

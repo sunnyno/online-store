@@ -19,11 +19,11 @@ public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryP
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
-        String[] beanDefinitionNames = configurableListableBeanFactory.getBeanDefinitionNames();
         String propertyPath = System.getProperty(PROPERTY_PATH_NAME);
         try (InputStream propertyFile = getClass().getResourceAsStream(propertyPath)) {
             Properties properties = new Properties();
             properties.load(propertyFile);
+            String[] beanDefinitionNames = configurableListableBeanFactory.getBeanDefinitionNames();
             Arrays.stream(beanDefinitionNames).forEach(beanDefinitionName -> {
                 BeanDefinition beanDefinition = configurableListableBeanFactory.getBeanDefinition(beanDefinitionName);
                 MutablePropertyValues propertyValues = beanDefinition.getPropertyValues();
@@ -37,9 +37,9 @@ public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryP
                             String replacingValue = properties.getProperty(key);
                             //unable to find property in a file thus look into system properties
                             if (replacingValue == null) {
-                                String substring = contextValue.substring(contextValue.indexOf(PLACEHOLDER_PREFIX) + PLACEHOLDER_PREFIX.length(),
+                                String propertyValueName = contextValue.substring(contextValue.indexOf(PLACEHOLDER_PREFIX) + PLACEHOLDER_PREFIX.length(),
                                         contextValue.indexOf(PLACEHOLDER_SUFFIX));
-                                replacingValue = System.getenv().get(substring);
+                                replacingValue = System.getenv().get(propertyValueName);
                             }
                             propertyValues.addPropertyValue(key, replacingValue);
                         }
