@@ -1,5 +1,6 @@
 package com.dzytsiuk.onlinestore;
 
+import com.dzytsiuk.onlinestore.property.PropertyContainer;
 import com.dzytsiuk.onlinestore.security.SecurityService;
 import com.dzytsiuk.onlinestore.service.ProductService;
 import com.dzytsiuk.onlinestore.web.filter.SecurityFilter;
@@ -15,7 +16,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.DispatcherType;
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Properties;
 
@@ -26,7 +26,7 @@ public class Starter {
 
     public static void main(String[] args) throws Exception {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml");
-        Properties properties = getEnvironmentProperties();
+        Properties properties = PropertyContainer.getProperties();
         //datasource ssl config
         String sslProperty = properties.getProperty(SSL);
         if (sslProperty != null) {
@@ -34,11 +34,9 @@ public class Starter {
             dataSource.addConnectionProperty(SSL, sslProperty);
             dataSource.addConnectionProperty(SSLFACTORY, properties.getProperty(SSLFACTORY));
         }
-
         //service
         ProductService productService = applicationContext.getBean(ProductService.class);
         SecurityService securityService = applicationContext.getBean(SecurityService.class);
-
         //servlet
         ProductServlet productServlet = new ProductServlet();
         productServlet.setProductService(productService);
@@ -46,17 +44,14 @@ public class Starter {
         addProductServlet.setProductService(productService);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-
         context.addServlet(new ServletHolder(productServlet), "/products");
         context.addServlet(new ServletHolder(addProductServlet), "/product/add");
         context.addServlet(new ServletHolder(new AssetsServlet()), "/assets/*");
         context.addServlet(new ServletHolder(new LoginServlet(securityService)), "/login");
         context.addServlet(new ServletHolder(new LogoutServlet(securityService)), "/logout");
-
         //filter
         context.addFilter(new FilterHolder(new SecurityFilter(securityService)), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
         context.addFilter(new FilterHolder(new Utf8Filter()), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
-
         //start
         String port = properties.getProperty(PORT);
         if(port == null){
@@ -65,15 +60,5 @@ public class Starter {
         Server server = new Server(Integer.parseInt(port));
         server.setHandler(context);
         server.start();
-    }
-
-    private static Properties getEnvironmentProperties() {
-        try {
-            Properties properties = new Properties();
-            properties.load(Starter.class.getResourceAsStream(System.getProperty("properties.path")));
-            return properties;
-        } catch (IOException e) {
-            throw new RuntimeException("Error loading environment properties", e);
-        }
     }
 }
