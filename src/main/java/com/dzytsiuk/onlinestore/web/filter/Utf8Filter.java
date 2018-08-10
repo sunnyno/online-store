@@ -23,6 +23,5 @@ public class Utf8Filter implements Filter {
 
     @Override
     public void destroy() {
-
     }
 }
