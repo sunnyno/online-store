@@ -13,14 +13,13 @@ public class Starter {
     public static void main(String[] args) throws Exception {
         Properties properties = PropertyContainer.getProperties();
         String port = properties.getProperty(PORT);
-        if(port == null){
+        if (port == null) {
             port = System.getenv().get(PORT.toUpperCase());
         }
         Server server = new Server(Integer.parseInt(port));
         HandlerCollection handlers = new HandlerCollection();
         WebAppContext webapp = new WebAppContext();
-        //TODO:target?!
-        webapp.setWar("target/online-store-1.0-SNAPSHOT.war");
+        webapp.setWar(Starter.class.getProtectionDomain().getCodeSource().getLocation() + "../online-store-1.0-SNAPSHOT.war");
         handlers.addHandler(webapp);
         server.setHandler(handlers);
         server.start();

@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNotNull
 class JdbcProductDaoITest {
 
     static final String PROPERTY_FILE_PATH = "/property/test.application.properties"
-    static DBInitializer dbInitializer = new DBInitializer()
+    static final DBInitializer DB_INITIALIZER = new DBInitializer()
     static final String SCHEMA_FILE_PATH = "/db/schema.sql"
     static final String DATASET_FILE_PATH = "/db/dataset/product-dataset.xml"
 
@@ -29,13 +29,13 @@ class JdbcProductDaoITest {
     static void setUp() {
         System.setProperty("spring.profiles.active", "test")
         System.setProperty("properties.path", PROPERTY_FILE_PATH)
-        dbInitializer.createSchema(PROPERTY_FILE_PATH, SCHEMA_FILE_PATH)
+        DB_INITIALIZER.createSchema(PROPERTY_FILE_PATH, SCHEMA_FILE_PATH)
     }
 
     @Before
     void importDataSet() throws Exception {
-        IDataSet dataSet = dbInitializer.readDataSet(DATASET_FILE_PATH)
-        dbInitializer.cleanlyInsert(dataSet)
+        IDataSet dataSet = DB_INITIALIZER.readDataSet(DATASET_FILE_PATH)
+        DB_INITIALIZER.cleanlyInsert(dataSet)
     }
 
     @Test

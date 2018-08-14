@@ -22,8 +22,8 @@ public class Session {
         return expireDate;
     }
 
-    public void setExpireDate(int expireSeconds) {
-        this.expireDate = LocalDateTime.now().plusSeconds(expireSeconds);
+    public void setExpireDate(LocalDateTime expireDate) {
+        this.expireDate = expireDate;
     }
 
     public User getUser() {

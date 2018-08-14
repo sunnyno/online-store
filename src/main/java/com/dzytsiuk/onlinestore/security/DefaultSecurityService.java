@@ -37,8 +37,7 @@ public class DefaultSecurityService implements SecurityService {
                 String token = UUID.randomUUID().toString();
                 session.setUser(user);
                 session.setToken(token);
-                int ttl = getSessionTimeToLive();
-                session.setExpireDate(ttl);
+                session.setExpireDate(LocalDateTime.now().plusSeconds(ttl));
                 sessions.add(session);
                 return Optional.of(session);
             }
