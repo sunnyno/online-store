@@ -20,9 +20,9 @@ import java.util.EnumSet;
 import java.util.Properties;
 
 public class Starter {
-    private static final String SSLFACTORY = "sslfactory";
+    private static final String SSLFACTORY = "web.sslfactory";
     private static final String SSL = "web.ssl";
-    private static final String PORT = "web.port";
+    private static final String PORT = "port";
 
     public static void main(String[] args) throws Exception {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml");
@@ -54,7 +54,7 @@ public class Starter {
         context.addFilter(new FilterHolder(new SecurityFilter(securityService)), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
         context.addFilter(new FilterHolder(new Utf8Filter()), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
         //start
-        String port = properties.getProperty(PORT);
+        String port = properties.getProperty("web."+PORT);
         if(port == null){
             port = System.getenv().get(PORT.toUpperCase());
         }
