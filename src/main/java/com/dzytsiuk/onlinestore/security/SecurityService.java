@@ -2,7 +2,6 @@ package com.dzytsiuk.onlinestore.security;
 
 import com.dzytsiuk.onlinestore.service.UserService;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface SecurityService {
@@ -13,8 +12,9 @@ public interface SecurityService {
 
     void setUserService(UserService userService);
 
-    List<Session> getSessions();
+    long getSessionTimeToLive(Session session);
 
-    int getSessionTimeToLive();
+    void logout(String token);
 
+    Optional<Session> getSessionByToken(String token);
 }

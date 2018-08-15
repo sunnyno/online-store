@@ -1,5 +1,7 @@
 package com.dzytsiuk.onlinestore.dao.jdbc;
 
+import com.dzytsiuk.jdbcwrapper.JdbcTemplate;
+import com.dzytsiuk.jdbcwrapper.JdbcTemplateImpl;
 import com.dzytsiuk.onlinestore.dao.UserDao;
 import com.dzytsiuk.onlinestore.dao.jdbc.mapper.UserRowMapper;
 import com.dzytsiuk.onlinestore.entity.User;
@@ -15,32 +17,17 @@ import java.util.Optional;
 
 public class JdbcUserDao implements UserDao {
     private static final UserRowMapper USER_ROW_MAPPER = new UserRowMapper();
-    private static final String FIND_BY_LOGIN_SQL = "select password, salt from \"user\" where login = ?";
-    private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
-
-    private DataSource dataSource;
-
+    private static final String FIND_BY_LOGIN_SQL = "select login, password, salt from \"user\" where login = ?";
+    private static final Logger logger = LoggerFactory.getLogger(JdbcUserDao.class);
+    private JdbcTemplate jdbcTemplate;
     @Override
     public Optional<User> findByLogin(String login) {
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_SQL)) {
-            preparedStatement.setString(1, login);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                logger.info("Executing {}", FIND_BY_LOGIN_SQL);
-                //login is unique in DB
-                if (resultSet.next()) {
-                    return Optional.of(USER_ROW_MAPPER.mapRow(resultSet, login));
-                }
-                return Optional.empty();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error getting user", e);
-        }
-
+        logger.info("Executing {}", FIND_BY_LOGIN_SQL);
+        return Optional.of(jdbcTemplate.queryForObject(FIND_BY_LOGIN_SQL, USER_ROW_MAPPER, login));
     }
 
     @Override
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 }

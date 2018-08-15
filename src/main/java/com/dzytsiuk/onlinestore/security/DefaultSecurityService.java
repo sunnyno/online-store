@@ -1,28 +1,32 @@
 package com.dzytsiuk.onlinestore.security;
 
 import com.dzytsiuk.onlinestore.entity.User;
+import com.dzytsiuk.onlinestore.security.builder.SessionBuilder;
+import com.dzytsiuk.onlinestore.security.builder.SessionBuilderImpl;
 import com.dzytsiuk.onlinestore.service.UserService;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class DefaultSecurityService implements SecurityService {
     private UserService userService;
-    private List<Session> sessions = new ArrayList<>();
-    private int ttl;
+    private Map<User, Session> sessions = new HashMap<>();
+    private long timeToLive;
 
     @Override
     public boolean isValid(String token) {
-        return sessions.stream()
-                .filter(x -> x.getToken().equals(token))
-                .anyMatch(x -> {
-                    if (x.getExpireDate().isBefore(LocalDateTime.now())) {
-                        sessions.remove(x);
-                        return false;
-                    } else {
-                        return true;
-                    }
-                });
+        Optional<Session> sessionByToken = getSessionByToken(token);
+        if (sessionByToken.isPresent()) {
+            Session session = sessionByToken.get();
+            if (session.getExpireDate().isBefore(LocalDateTime.now())) {
+                sessions.remove(session.getUser());
+                return false;
+            }else{
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -33,13 +37,17 @@ public class DefaultSecurityService implements SecurityService {
             int hashedPass = Objects.hash(password, user.getSalt());
             int userPass = user.getPassword();
             if (userPass == hashedPass) {
-                Session session = new Session();
-                String token = UUID.randomUUID().toString();
-                session.setUser(user);
-                session.setToken(token);
-                int ttl = getSessionTimeToLive();
-                session.setExpireDate(ttl);
-                sessions.add(session);
+                Session session = sessions.get(user);
+                if (session == null) {
+                    String token = UUID.randomUUID().toString();
+                    SessionBuilder sessionBuilder = new SessionBuilderImpl();
+                    sessionBuilder.setToken(token);
+                    sessionBuilder.setUser(user);
+                    sessionBuilder.setExpireDate(LocalDateTime.now().plusSeconds(timeToLive));
+                    sessionBuilder.setProducts(new ArrayList<>());
+                    session = sessionBuilder.getSession();
+                    sessions.put(user, session);
+                }
                 return Optional.of(session);
             }
         }
@@ -52,16 +60,23 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     @Override
-    public List<Session> getSessions() {
-        return sessions;
+    public long getSessionTimeToLive(Session session) {
+        LocalDateTime expireDate = session.getExpireDate();
+        return LocalDateTime.now().until(expireDate, ChronoUnit.SECONDS);
     }
 
     @Override
-    public int getSessionTimeToLive() {
-        return ttl;
+    public void logout(String token) {
+        Optional<Session> sessionByToken = getSessionByToken(token);
+        sessionByToken.ifPresent(session -> sessions.remove(session.getUser()));
     }
 
-    public void setTtl(int ttl) {
-        this.ttl = ttl;
+    @Override
+    public Optional<Session> getSessionByToken(String token) {
+        return sessions.values().stream().filter(session -> session.getToken().equals(token)).findFirst();
+    }
+
+    public void setTimeToLive(int timeToLive) {
+        this.timeToLive = timeToLive;
     }
 }

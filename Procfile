@@ -1,1 +1,1 @@
-web: java -Dspring.profiles.active=prod -Dproperties.path=/property/prod.application.properties -cp target/classes/:target/dependency/* com.dzytsiuk.onlinestore.Starter
+web: java -Dspring.profiles.active=prod -Dproperties.path=/properties/prod.application.properties -cp target/classes/:target/dependency/* com.dzytsiuk.onlinestore.Starter

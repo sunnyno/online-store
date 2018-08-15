@@ -22,9 +22,9 @@ class DBInitializer {
     void createSchema(String propertyFilePath, String schemaFilePath) {
         Properties properties = new Properties()
         properties.load(getClass().getResourceAsStream(propertyFilePath))
-        url = properties.getProperty("url")
-        username = properties.getProperty("username")
-        password = properties.getProperty("password")
+        url = properties.getProperty("db.url")
+        username = properties.getProperty("db.username")
+        password = properties.getProperty("db.password")
         RunScript.execute(url, username, password, getClass().getResource(schemaFilePath).getFile(), Charset.defaultCharset(), false)
     }
 

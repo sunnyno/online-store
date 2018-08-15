@@ -12,4 +12,6 @@ public interface ProductService {
     void save(Product product);
 
     void setProductDao(ProductDao productDao);
+
+    Product findProductById(int productId);
 }

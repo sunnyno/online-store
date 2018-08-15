@@ -1,6 +1,7 @@
 package com.dzytsiuk.onlinestore.dao;
 
 
+import com.dzytsiuk.jdbcwrapper.JdbcTemplate;
 import com.dzytsiuk.onlinestore.entity.Product;
 
 import javax.sql.DataSource;
@@ -12,5 +13,7 @@ public interface ProductDao {
 
     void save(Product product);
 
-    void setDataSource(DataSource dataSource);
+    void setJdbcTemplate(JdbcTemplate jdbcTemplate);
+
+    Product findProductById(int productId);
 }

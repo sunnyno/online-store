@@ -30,11 +30,11 @@ public class PropertyPlaceholderBeanFactoryPostProcessor implements BeanFactoryP
                     String contextValue = typedStringValue.getValue();
                     if (contextValue.startsWith(PLACEHOLDER_PREFIX)) {
                         String key = propertyValue.getName();
-                        String replacingValue = properties.getProperty(key);
-                        //unable to find property in a file thus look into system properties
+                        String propertyValueName = contextValue.substring(contextValue.indexOf(PLACEHOLDER_PREFIX) + PLACEHOLDER_PREFIX.length(),
+                                contextValue.indexOf(PLACEHOLDER_SUFFIX));
+                        String replacingValue = properties.getProperty(propertyValueName);
+                        //unable to find properties in a file thus look into system properties
                         if (replacingValue == null) {
-                            String propertyValueName = contextValue.substring(contextValue.indexOf(PLACEHOLDER_PREFIX) + PLACEHOLDER_PREFIX.length(),
-                                    contextValue.indexOf(PLACEHOLDER_SUFFIX));
                             replacingValue = System.getenv().get(propertyValueName);
                         }
                         propertyValues.addPropertyValue(key, replacingValue);

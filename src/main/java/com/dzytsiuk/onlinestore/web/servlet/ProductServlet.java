@@ -6,6 +6,7 @@ import com.dzytsiuk.onlinestore.service.ProductService;
 import com.dzytsiuk.onlinestore.web.templater.PageProcessor;
 import org.thymeleaf.context.WebContext;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ public class ProductServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         PageProcessor.instance().process("products.html", webContext);
     }
+
 
     public void setProductService(ProductService productService) {
         this.productService = productService;

@@ -30,6 +30,11 @@
             <a class="nav-link" href="/logout">Logout</a>
         </li>
     </ul>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="/cart">Cart</a>
+        </li>
+    </ul>
 </nav>
 <div class="container p-3">
     <div class="row">
@@ -41,7 +46,11 @@
                 <div class="card-body">
                     <h4 class="card-title" th:text="${product.name}"></h4>
                     <p class="card-text">Price = <span th:text="${product.price}"></span>$
-                        <br> Date created : <span th:text="${#temporals.format(product.creationDate, 'dd-MM-yyyy HH:mm')}"></span></p>
+                        <br> Date created : <span
+                                th:text="${#temporals.format(product.creationDate, 'dd-MM-yyyy HH:mm')}"></span></p>
+                    <form action="/cart" method="post">
+                        <button name="productId" th:value="${product.getId()}">add to cart</button>
+                    </form>
                 </div>
             </div>
         </div>

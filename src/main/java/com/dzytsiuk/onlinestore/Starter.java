@@ -21,8 +21,8 @@ import java.util.Properties;
 
 public class Starter {
     private static final String SSLFACTORY = "sslfactory";
-    private static final String SSL = "ssl";
-    private static final String PORT = "port";
+    private static final String SSL = "web.ssl";
+    private static final String PORT = "web.port";
 
     public static void main(String[] args) throws Exception {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("context.xml");
@@ -49,6 +49,7 @@ public class Starter {
         context.addServlet(new ServletHolder(new AssetsServlet()), "/assets/*");
         context.addServlet(new ServletHolder(new LoginServlet(securityService)), "/login");
         context.addServlet(new ServletHolder(new LogoutServlet(securityService)), "/logout");
+        context.addServlet(new ServletHolder(new CartServlet(securityService, productService)), "/cart");
         //filter
         context.addFilter(new FilterHolder(new SecurityFilter(securityService)), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
         context.addFilter(new FilterHolder(new Utf8Filter()), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
