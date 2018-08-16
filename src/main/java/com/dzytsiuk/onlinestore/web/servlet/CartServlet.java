@@ -6,6 +6,7 @@ import com.dzytsiuk.onlinestore.service.ProductService;
 import com.dzytsiuk.onlinestore.web.templater.PageProcessor;
 import org.thymeleaf.context.WebContext;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class CartServlet extends HttpServlet {
-    private static final String USER_TOKEN_COOKIE = "user-token";
+
     private SecurityService securityService;
     private ProductService productService;
 
@@ -27,7 +28,7 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         WebContext webContext = new WebContext(req, resp, req.getServletContext());
-        Optional<Session> currentSession = getCurrentSession(req);
+        Optional<Session> currentSession = securityService.getCurrentSession(req);
         currentSession.ifPresent(session -> webContext.setVariable("products", session.getProducts()));
         PageProcessor.instance().process("cart.html", webContext);
     }
@@ -35,23 +36,10 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String productId = req.getParameter("productId");
-        Optional<Session> currentSession = getCurrentSession(req);
+        Optional<Session> currentSession = securityService.getCurrentSession(req);
         currentSession.ifPresent(session ->
                 session.addProduct(productService.findProductById(Integer.parseInt(productId))));
         resp.sendRedirect("/products");
     }
 
-    private Optional<Session> getCurrentSession(HttpServletRequest req) {
-        Cookie[] cookies = req.getCookies();
-        Optional<Cookie> tokenCookie = Optional.empty();
-        if (cookies != null) {
-            tokenCookie = Arrays.stream(cookies)
-                    .filter(cookie -> cookie.getName().equals(USER_TOKEN_COOKIE))
-                    .findFirst();
-        }
-        if (tokenCookie.isPresent()) {
-            return securityService.getSessionByToken(tokenCookie.get().getValue());
-        }
-        return Optional.empty();
-    }
 }

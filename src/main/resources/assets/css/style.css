@@ -1,0 +1,173 @@
+/*---main style---*/
+html{
+	max-width: 1280px;
+	margin:auto;
+	height: 100%;
+}
+body{
+	font-family: 'Raleway', sans-serif;
+	min-width: 1280px;
+}
+
+p{
+	line-height: 24px;
+}
+.container{
+	width: 1280px;
+	/*height: 800px;*/
+}
+
+
+/*header*/
+.header{
+	background: url("../img/header_back.jpg");
+	background-position: center;
+	background-size: cover;
+	height: 500px;
+}
+.header__text{
+	display: flex;
+}
+
+.header__logo{
+	width: 200px;
+	height: 50px;
+	margin: 20px 0 0 40px;
+}
+
+.main-nav__list{
+	display: flex;
+	margin: 45px 0 0 650px;
+	list-style-type: none;
+}
+
+.main-nav__item a{
+	line-height: 36px; 
+	color: #fff;
+	font-size: 18px;
+	text-decoration: none;
+	text-transform: uppercase;
+	margin-right: 30px;
+
+}
+
+
+.main-nav__item a:active{
+	color: #f7af68;
+	text-decoration: underline;
+} 
+.main-nav__item a:hover{
+	text-decoration: underline;	
+} 
+
+
+/*main*/
+.product{
+	background-color: #f2f2f2;
+}
+
+.product__header{
+	margin: 0 0 50px 70px;
+	padding-top: 30px;
+}
+
+.product__description{
+		display: flex;
+}
+
+
+.product__image{
+	width: 225px;
+	height: 225px;
+	margin: 20px 0 50px 300px;
+}
+
+
+.description__list{
+	list-style-type: none;
+}
+
+.product__name{
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.product__price{
+	font-size: 24px;	
+	line-height: 36px;
+}
+
+.product__date{
+	font-size: 14px;
+	text-align: right;
+}
+
+.product__btn{
+	background: none;
+	margin-top: 20px;
+	font-size: 18px;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-decoration: none;
+	border: 2px solid #fff;
+	height: 40px;
+	width: 165px;
+	text-align: center;
+	color: #a38b70;
+	border: 2px solid #a38b70;
+}
+
+.product__btn:hover{
+	color: #8d7359;
+	border: 2px solid #8d7359;
+}
+
+.product__btn:active{
+	border: 2px solid #8d7359;
+	color: #ddd5cd;
+	outline: none;
+}
+
+
+/*footer*/
+
+footer{
+ 	background-color: #363636;
+ 	display: flex;
+ }
+
+.contacts{
+	margin: 40px 50px 30px 150px;
+}
+ .contacts__header{
+ 	margin-top: 0;
+	color: #fff;
+ 	padding: 20px 0 0 20px;
+ }
+
+.contacts p{
+	color: #fff;
+	line-height: 16px;
+	padding-left: 20px;
+}
+
+.social{
+	margin: 40px 0 0 150px;	
+}
+
+.social__header{
+	color: #fff;
+}
+
+.social__item{
+	margin-right: 20px;
+}
+
+
+
+
+
+
+
+
+

@@ -50,11 +50,12 @@ public class Starter {
         context.addServlet(new ServletHolder(new LoginServlet(securityService)), "/login");
         context.addServlet(new ServletHolder(new LogoutServlet(securityService)), "/logout");
         context.addServlet(new ServletHolder(new CartServlet(securityService, productService)), "/cart");
+        context.addServlet(new ServletHolder(new DeleteCartItemServlet(securityService, productService)), "/cart/delete");
         //filter
         context.addFilter(new FilterHolder(new SecurityFilter(securityService)), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
         context.addFilter(new FilterHolder(new Utf8Filter()), "/*", EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD));
         //start
-        String port = properties.getProperty("web."+PORT);
+        String port = properties.getProperty(PORT);
         if(port == null){
             port = System.getenv().get(PORT.toUpperCase());
         }

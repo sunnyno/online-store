@@ -2,6 +2,7 @@ package com.dzytsiuk.onlinestore.security;
 
 import com.dzytsiuk.onlinestore.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 public interface SecurityService {
@@ -17,4 +18,6 @@ public interface SecurityService {
     void logout(String token);
 
     Optional<Session> getSessionByToken(String token);
+
+    Optional<Session> getCurrentSession(HttpServletRequest req);
 }

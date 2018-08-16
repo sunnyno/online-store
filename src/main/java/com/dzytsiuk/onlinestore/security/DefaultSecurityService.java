@@ -5,11 +5,14 @@ import com.dzytsiuk.onlinestore.security.builder.SessionBuilder;
 import com.dzytsiuk.onlinestore.security.builder.SessionBuilderImpl;
 import com.dzytsiuk.onlinestore.service.UserService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class DefaultSecurityService implements SecurityService {
+    private static final String USER_TOKEN_COOKIE = "user-token";
     private UserService userService;
     private Map<User, Session> sessions = new HashMap<>();
     private long timeToLive;
@@ -76,6 +79,20 @@ public class DefaultSecurityService implements SecurityService {
         return sessions.values().stream().filter(session -> session.getToken().equals(token)).findFirst();
     }
 
+    @Override
+    public Optional<Session> getCurrentSession(HttpServletRequest req) {
+        Cookie[] cookies = req.getCookies();
+        Optional<Cookie> tokenCookie = Optional.empty();
+        if (cookies != null) {
+            tokenCookie = Arrays.stream(cookies)
+                    .filter(cookie -> cookie.getName().equals(USER_TOKEN_COOKIE))
+                    .findFirst();
+        }
+        if (tokenCookie.isPresent()) {
+            return getSessionByToken(tokenCookie.get().getValue());
+        }
+        return Optional.empty();
+    }
     public void setTimeToLive(int timeToLive) {
         this.timeToLive = timeToLive;
     }

@@ -1,60 +1,58 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-
-    <title>Products</title>
+	<meta charset="UTF-8">
+	<title>Pastry Shop</title>
+	<link href="https://fonts.googleapis.com/css?family=Raleway:400,300i,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css" >
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #e3f2fd">
-    <a class="navbar-brand" href="/products">
-        <img src="/assets/img/store-logo.jpg"
-             width="30px" height="30px"
-             class="d-inline-block align-top"/>Store</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/product/add">Add Product <span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
-    </div>
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="/logout">Logout</a>
-        </li>
-    </ul>
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="/cart">Cart</a>
-        </li>
-    </ul>
-</nav>
-<div class="container p-3">
-    <div class="row">
-        <div class="col-md-3 p-4" th:each="product : ${products}">
-            <div class="card" style="box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);}">
-                <img src="assets/img/default-product.png"
-                     alt="" class="card-img-top">
-                <hr/>
-                <div class="card-body">
-                    <h4 class="card-title" th:text="${product.name}"></h4>
-                    <p class="card-text">Price = <span th:text="${product.price}"></span>$
-                        <br> Date created : <span
-                                th:text="${#temporals.format(product.creationDate, 'dd-MM-yyyy HH:mm')}"></span></p>
-                    <form action="/cart" method="post">
-                        <button name="productId" th:value="${product.getId()}">add to cart</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+<header class="container header">
+	<div class="header__text">
+		<img class="header__logo" src="/assets/pictures/logo.png" alt="logo">
+		<nav class="main-nav">
+			<ul class="main-nav__list">
+					<li class="main-nav__item"><a href="/products">HOME</a></li>
+					<li class="main-nav__item"><a href="/product/add">ADD PRODUCT</a></li>
+					<li class="main-nav__item"><a href="/cart"><img src="/assets/pictures/cart.png" alt="cart logo"></a></li>
+				</ul>
+		</nav>
+	</div>
+</header>
+
+<main class="container">
+	<section class="product">
+		<h2 class="product__header">Catalog</h2>
+		<div class="product__description" th:each="product : ${products}" >
+			<img class="product__image" src="/assets/img/default-product.jpg" alt="product photo">
+			<ul class="description__list">
+				<li class="product__name"  th:text="${product.name}"></li>
+				<li class="product__price"  ><span th:text="${product.price}"></span> $</li>
+				<li class="product__date">Created on <span th:text="${#temporals.format(product.creationDate, 'dd-MM-yyyy HH:mm')}"></span></li>
+				<li > <form action="/cart" method="post">
+                        <button class="product__btn" name="productId" th:value="${product.getId()}">add to cart</button>
+                    </form></li>
+			</ul>
+		</div>
+	</section>
+</main>
+
+<footer class="container">
+	<section class="contacts">
+		<h2 class="contacts__header">Visit the shop</h2>
+		<p>+380971112223</p>
+		<p>London center of cakes, 12</p>
+		<p>MON-SAT: 11AM-7PM</p>
+		<p>SUN: 12PM-6PM</p>
+	</section>
+	<section class="social">
+		<h2 class="social__header">Follow us</h2>
+			<a href="" class="social__item"><img src="/assets/pictures/vk.png" alt="vk"></a>
+			<a href="#" class="social__item"><img src="/assets/pictures/fb.png" alt="fb"></a>
+			<a href="#" class="social__item"><img src="/assets/pictures/inst.png" alt="inst"></a>
+	</section>
+</footer>
 </body>
 </html>
