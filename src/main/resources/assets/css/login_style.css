@@ -11,6 +11,12 @@
 	padding-bottom: 150px;
 }
 
+.login__error{
+	color: darkred;
+	width: 400px;
+	margin-left: 70px;
+}
+
 .login__header{
 	margin-top:0;
 	padding-top: 150px;
@@ -31,17 +37,5 @@
 
 
 .login__btn{
-	background: none;
-	font-size: 16px;
-	font-weight: bolder;
-	text-decoration: none;
-	text-transform: uppercase;
-	padding: 5px;
-	height: 40px;
-	width: 100px;
-	text-align: center;
-	color: #a38b70;
-	border: 1px solid #a38b70;	
-	margin: 0 10px 20px 0;
-
+	width: 120px;
 }

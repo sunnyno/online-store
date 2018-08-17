@@ -32,7 +32,7 @@
 				<li class="product__price"  ><span th:text="${product.price}"></span> $</li>
 				<li class="product__date">Created on <span th:text="${#temporals.format(product.creationDate, 'dd-MM-yyyy HH:mm')}"></span></li>
 				<li > <form action="/cart" method="post">
-                        <button class="product__btn" name="productId" th:value="${product.getId()}">add to cart</button>
+                        <button class="btn" name="productId" th:value="${product.getId()}">add to cart</button>
                     </form></li>
 			</ul>
 		</div>

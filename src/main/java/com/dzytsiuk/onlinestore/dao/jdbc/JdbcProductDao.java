@@ -3,6 +3,7 @@ package com.dzytsiuk.onlinestore.dao.jdbc;
 
 import com.dzytsiuk.jdbcwrapper.JdbcTemplate;
 import com.dzytsiuk.jdbcwrapper.JdbcTemplateImpl;
+import com.dzytsiuk.jdbcwrapper.exception.MoreThanOneObjectFoundException;
 import com.dzytsiuk.onlinestore.dao.ProductDao;
 import com.dzytsiuk.onlinestore.dao.jdbc.mapper.ProductRowMapper;
 import com.dzytsiuk.onlinestore.entity.Product;
@@ -44,5 +45,6 @@ public class JdbcProductDao implements ProductDao {
     public Product findProductById(int productId) {
         logger.info("Executing {}", FIND_BY_ID_SQL);
         return jdbcTemplate.queryForObject(FIND_BY_ID_SQL, PRODUCT_ROW_MAPPER, productId);
+
     }
 }

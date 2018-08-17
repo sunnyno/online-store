@@ -2,6 +2,7 @@ package com.dzytsiuk.onlinestore.dao.jdbc;
 
 import com.dzytsiuk.jdbcwrapper.JdbcTemplate;
 import com.dzytsiuk.jdbcwrapper.JdbcTemplateImpl;
+import com.dzytsiuk.jdbcwrapper.exception.MoreThanOneObjectFoundException;
 import com.dzytsiuk.onlinestore.dao.UserDao;
 import com.dzytsiuk.onlinestore.dao.jdbc.mapper.UserRowMapper;
 import com.dzytsiuk.onlinestore.entity.User;
@@ -20,10 +21,12 @@ public class JdbcUserDao implements UserDao {
     private static final String FIND_BY_LOGIN_SQL = "select login, password, salt from \"user\" where login = ?";
     private static final Logger logger = LoggerFactory.getLogger(JdbcUserDao.class);
     private JdbcTemplate jdbcTemplate;
+
     @Override
     public Optional<User> findByLogin(String login) {
         logger.info("Executing {}", FIND_BY_LOGIN_SQL);
-        return Optional.of(jdbcTemplate.queryForObject(FIND_BY_LOGIN_SQL, USER_ROW_MAPPER, login));
+        User user = jdbcTemplate.queryForObject(FIND_BY_LOGIN_SQL, USER_ROW_MAPPER, login);
+        return Optional.ofNullable(user);
     }
 
     @Override

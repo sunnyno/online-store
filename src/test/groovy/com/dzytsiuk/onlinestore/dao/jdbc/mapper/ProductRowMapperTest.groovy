@@ -10,6 +10,9 @@ import java.time.LocalDateTime
 import static org.junit.Assert.assertEquals
 
 class ProductRowMapperTest {
+    static final String PROPERTY_FILE_PATH = "/properties/test.application.properties"
+    static final String SCHEMA_FILE_PATH = "/db/schema.sql"
+    static final String DATASET_FILE_PATH = "/db/dataset/product-dataset.xml"
 
     @Test
     void mapRowTest() {

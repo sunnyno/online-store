@@ -14,13 +14,39 @@ p{
 }
 .container{
 	width: 1280px;
-	/*height: 800px;*/
+}
+
+.btn{
+	background: none;
+	margin-top: 20px;
+	font-size: 18px;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-decoration: none;
+	border: 2px solid #fff;
+	height: 40px;
+	width: 165px;
+	text-align: center;
+	color: #a38b70;
+	border: 2px solid #a38b70;
+
 }
 
 
+.btn:hover{
+	color: #8d7359;
+	border: 2px solid #8d7359;
+}
+
+.btn:active{
+	border: 2px solid #8d7359;
+	color: #ddd5cd;
+	outline: none;
+}
+
 /*header*/
 .header{
-	background: url("../img/header_back.jpg");
+	background: url("/assets/img/header_back.jpg");
 	background-position: center;
 	background-size: cover;
 	height: 500px;
@@ -42,7 +68,7 @@ p{
 }
 
 .main-nav__item a{
-	line-height: 36px; 
+	line-height: 36px;
 	color: #fff;
 	font-size: 18px;
 	text-decoration: none;
@@ -55,10 +81,10 @@ p{
 .main-nav__item a:active{
 	color: #f7af68;
 	text-decoration: underline;
-} 
+}
 .main-nav__item a:hover{
-	text-decoration: underline;	
-} 
+	text-decoration: underline;
+}
 
 
 /*main*/
@@ -72,7 +98,7 @@ p{
 }
 
 .product__description{
-		display: flex;
+	display: flex;
 }
 
 
@@ -90,10 +116,11 @@ p{
 .product__name{
 	font-size: 24px;
 	font-weight: bold;
+	text-transform: capitalize;
 }
 
 .product__price{
-	font-size: 24px;	
+	font-size: 24px;
 	line-height: 36px;
 }
 
@@ -102,48 +129,22 @@ p{
 	text-align: right;
 }
 
-.product__btn{
-	background: none;
-	margin-top: 20px;
-	font-size: 18px;
-	font-weight: bold;
-	text-transform: uppercase;
-	text-decoration: none;
-	border: 2px solid #fff;
-	height: 40px;
-	width: 165px;
-	text-align: center;
-	color: #a38b70;
-	border: 2px solid #a38b70;
-}
-
-.product__btn:hover{
-	color: #8d7359;
-	border: 2px solid #8d7359;
-}
-
-.product__btn:active{
-	border: 2px solid #8d7359;
-	color: #ddd5cd;
-	outline: none;
-}
-
 
 /*footer*/
 
 footer{
- 	background-color: #363636;
- 	display: flex;
- }
+	background-color: #363636;
+	display: flex;
+}
 
 .contacts{
 	margin: 40px 50px 30px 150px;
 }
- .contacts__header{
- 	margin-top: 0;
+.contacts__header{
+	margin-top: 0;
 	color: #fff;
- 	padding: 20px 0 0 20px;
- }
+	padding: 20px 0 0 20px;
+}
 
 .contacts p{
 	color: #fff;
@@ -152,7 +153,7 @@ footer{
 }
 
 .social{
-	margin: 40px 0 0 150px;	
+	margin: 40px 0 0 150px;
 }
 
 .social__header{
