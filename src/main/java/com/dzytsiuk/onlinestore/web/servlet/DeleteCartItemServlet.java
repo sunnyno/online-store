@@ -24,7 +24,7 @@ public class DeleteCartItemServlet extends HttpServlet {
         String productId = req.getParameter("productId");
         Optional<Session> currentSession = securityService.getCurrentSession(req);
         currentSession.ifPresent(session ->
-                session.getProducts().remove(productService.findProductById(Integer.parseInt(productId))));
+                session.removeProduct(productService.findProductById(Integer.parseInt(productId))));
         resp.sendRedirect("/cart");
     }
 }

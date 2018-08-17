@@ -47,7 +47,7 @@ public class DefaultSecurityService implements SecurityService {
                     sessionBuilder.setToken(token);
                     sessionBuilder.setUser(user);
                     sessionBuilder.setExpireDate(LocalDateTime.now().plusSeconds(timeToLive));
-                    sessionBuilder.setProducts(new ArrayList<>());
+                    sessionBuilder.setCartItems(new ArrayList<>());
                     session = sessionBuilder.getSession();
                     sessions.put(user, session);
                 }

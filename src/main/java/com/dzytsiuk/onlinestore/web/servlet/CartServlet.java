@@ -6,13 +6,10 @@ import com.dzytsiuk.onlinestore.service.ProductService;
 import com.dzytsiuk.onlinestore.web.templater.PageProcessor;
 import org.thymeleaf.context.WebContext;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Optional;
 
 public class CartServlet extends HttpServlet {
@@ -29,7 +26,7 @@ public class CartServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         WebContext webContext = new WebContext(req, resp, req.getServletContext());
         Optional<Session> currentSession = securityService.getCurrentSession(req);
-        currentSession.ifPresent(session -> webContext.setVariable("products", session.getProducts()));
+        currentSession.ifPresent(session -> webContext.setVariable("cartItems", session.getCartItems()));
         PageProcessor.instance().process("cart.html", webContext);
     }
 

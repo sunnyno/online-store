@@ -12,10 +12,10 @@
 
 <header class="container header">
 	<div class="header__text">
-		<a href="/products"><img class="header__logo" src="/assets/pictures/logo.png" alt="logo"></a>
+		<a href="/cartItems"><img class="header__logo" src="/assets/pictures/logo.png" alt="logo"></a>
 		<nav class="main-nav">
 			<ul class="main-nav__list">
-					<li class="main-nav__item"><a href="/products">HOME</a></li>
+					<li class="main-nav__item"><a href="/cartItems">HOME</a></li>
 					<li class="main-nav__item"><a href="/product/add">ADD PRODUCT</a></li>
 				</ul>
 		</nav>
@@ -26,21 +26,22 @@
 	<section class="container cart" >
 		<h2 class="cart__header">Shopping Cart</h2>
 		<ul class="cart__list">
-			<li class="cart__item" th:each="product : ${products}">
+			<li class="cart__item" th:each="cartItem : ${cartItems}">
 				<div class="product__description"  >
 						<form action="/cart/delete" method="post">
-                        	<button class="delete__btn" name="productId" th:value="${product.id}"></button>
+                        	<button class="delete__btn" name="productId" th:value="${cartItem.product.id}"></button>
                     	</form>
 						<img class="product__image" src="/assets/img/default-product.jpg" alt="product photo">
 						<ul class="description__list">
-							<li class="product__name"  th:text="${product.name}"></li>
-							<li class="product__price" ><span th:text="${product.price}"></span> $</li>
+							<li class="product__name"  th:text="${cartItem.product.name}"></li>
+							<li class="product__quantity"  th:text="${cartItem.quantity}"></li>
+							<li class="product__price" ><span th:text="${cartItem.product.price}"></span>$</li>
 						</ul>
 				</div>
 			</li>
 		</ul>
 		<div class="cart__total">
-			<p>Total: <span th:text="${#aggregates.sum(products.{price})}"></span> $</p>
+			<p>Total: <span th:text="${#aggregates.sum(cartItems.{product.price*quantity})}"></span> $</p>
 		</div>
 		<div class="cart__actions">
 			<a class="btn cart__back" href="/products">Back</a>
