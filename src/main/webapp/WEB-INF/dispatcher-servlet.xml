@@ -10,6 +10,7 @@
 
     <mvc:resources location="WEB-INF/assets/img/" mapping="/assets/img/*"/>
     <mvc:resources location="WEB-INF/assets/css/" mapping="/assets/css/*"/>
+    <mvc:resources location="WEB-INF/assets/pictures/" mapping="/assets/pictures/*"/>
 
     <context:component-scan base-package="com.dzytsiuk.onlinestore.web.controller"/>
     <bean id="java8TimeDialect" class="org.thymeleaf.extras.java8time.dialect.Java8TimeDialect"/>

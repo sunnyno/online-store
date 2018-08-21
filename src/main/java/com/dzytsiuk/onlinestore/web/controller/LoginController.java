@@ -39,8 +39,8 @@ public class LoginController {
         Optional<Session> optionalSession = securityService.auth(login, password);
         optionalSession.ifPresent(token -> {
             Cookie cookie = new Cookie(USER_TOKEN_PARAMETER_NAME, optionalSession.get().getToken());
-            int secondsToExpire = securityService.getSessionTimeToLive();
-            cookie.setMaxAge(secondsToExpire);
+            long secondsToExpire = securityService.getSessionTimeToLive(optionalSession.get());
+            cookie.setMaxAge(Math.toIntExact(secondsToExpire));
             cookie.setHttpOnly(true);
             resp.addCookie(cookie);
             try {

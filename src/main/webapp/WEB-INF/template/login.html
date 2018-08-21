@@ -1,26 +1,48 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Login to Store</title>
-    <link href="/assets/css/login.css" rel="stylesheet">
-    <link  href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <title>Pastry Login</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css" >
+    <link rel="stylesheet" href="../assets/css/login_style.css" >
 </head>
+<body>
+<header class="container header">
+    <div class="header__text">
+        <img class="header__logo" src="../assets/pictures/logo.png" alt="logo">
+    </div>
+</header>
+<main>
+    <section class="login">
+        <h1 class="login__header">Please sign in</h1>
+        <form class="login__form" action="/login" method="post">
 
-<body class="text-center">
-    <form class="form-signin" action="/login" method="post">
-        <img class="mb-4" src="/assets/img/store-logo.jpg" alt="" width="72" height="72">
-        <br>
-        <div th:text="${errorMessage}"></div>
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="login" class="sr-only">Login</label>
-        <input type="text" id="login" name="login" class="form-control" placeholder="Login" required autofocus>
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
+            <div class="login__error" th:text="${errorMessage}"></div>
+
+            <label for="login" class="sr-only">Login</label>
+            <input class="login__attribute" type="text" id="login" name="login" placeholder="Login" required autofocus>
+            <label for="password" class="sr-only">Password</label>
+            <input class="login__attribute"  type="password" id="password" name="password"  placeholder="Password" required>
+            <button class="btn login__btn" type="submit">Sign in</button>
+        </form>
+    </section>
+</main>
+<footer class="container">
+    <section class="contacts">
+        <h2 class="contacts__header">Visit the shop</h2>
+        <p>+380971112223</p>
+        <p>London center of cakes, 12</p>
+        <p>MON-SAT: 11AM-7PM</p>
+        <p>SUN: 12PM-6PM</p>
+    </section>
+    <section class="social">
+        <h2 class="social__header">Follow us</h2>
+        <a href="" class="social__item"><img src="../assets/pictures/vk.png" alt="vk"></a>
+        <a href="#" class="social__item"><img src="../assets/pictures/fb.png" alt="fb"></a>
+        <a href="#" class="social__item"><img src="../assets/pictures/inst.png" alt="inst"></a>
+    </section>
+</footer>
 </body>
 </html>

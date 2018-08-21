@@ -6,17 +6,21 @@ import com.dzytsiuk.onlinestore.dao.jdbc.mapper.ProductRowMapper;
 import com.dzytsiuk.onlinestore.entity.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class JdbcProductDao implements ProductDao {
     private static final ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
     private static final String FIND_ALL_SQL = "select id, creation_date, name, price from product;";
     private static final String SAVE_SQL = "insert into product(creation_date, name, price) values (?,?,?);";
     private static final Logger logger = LoggerFactory.getLogger(ProductDao.class);
+    @Autowired
     private DataSource dataSource;
 
     @Override

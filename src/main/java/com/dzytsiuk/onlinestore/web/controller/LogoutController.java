@@ -34,7 +34,7 @@ public class LogoutController {
                     .findFirst();
         }
         tokenCookie.ifPresent(cookie -> {
-            securityService.getSessions().removeIf(session -> session.getToken().equals(cookie.getValue()));
+            securityService.logout(cookie.getValue());
             cookie.setMaxAge(0);
             resp.addCookie(cookie);
         });
