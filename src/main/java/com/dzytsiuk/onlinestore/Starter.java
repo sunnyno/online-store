@@ -11,7 +11,7 @@ public class Starter {
     private static int port = 8080;
 
     public static void main(String[] args) throws Exception {
-        String systemPort = System.getProperty("PORT");
+        String systemPort = System.getenv().get("PORT");
         if(systemPort != null){
             port = Integer.parseInt(systemPort);
         }
@@ -19,8 +19,8 @@ public class Starter {
         WebAppContext webapp = new WebAppContext();
         webapp.setWar(Starter.class.getProtectionDomain().getCodeSource().getLocation() + "../online-store-1.0-SNAPSHOT.war");
         handlers.addHandler(webapp);
-        Server server = new Server(Starter.port);
-        logger.info("Server started at port {}", Starter.port);
+        Server server = new Server(port);
+        logger.info("Server started at port {}", port);
         server.setHandler(handlers);
         server.start();
     }
