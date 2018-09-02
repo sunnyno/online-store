@@ -8,19 +8,15 @@ import org.slf4j.LoggerFactory;
 
 public class Starter {
     private static final Logger logger = LoggerFactory.getLogger(Starter.class);
-    private static int port = 8080;
 
     public static void main(String[] args) throws Exception {
-        String systemPort = System.getenv("PORT");
-        if(systemPort != null){
-            Starter.port = Integer.parseInt(systemPort);
-        }
+        int port = Integer.parseInt(System.getenv("PORT"));
         HandlerCollection handlers = new HandlerCollection();
         WebAppContext webapp = new WebAppContext();
         webapp.setWar(Starter.class.getProtectionDomain().getCodeSource().getLocation() + "../online-store-1.0-SNAPSHOT.war");
         handlers.addHandler(webapp);
-        Server server = new Server(Starter.port);
-        logger.info("Server started at port {}", Starter.port);
+        Server server = new Server(port);
+        logger.info("Server started at port {}", port);
         server.setHandler(handlers);
         server.start();
     }
