@@ -11,7 +11,7 @@ public class Starter {
     private static int port = 8080;
 
     public static void main(String[] args) throws Exception {
-        String systemPort = System.getenv().get("PORT");
+        String systemPort = System.getProperty("PORT");
         if(systemPort != null){
             port = Integer.parseInt(systemPort);
         }
