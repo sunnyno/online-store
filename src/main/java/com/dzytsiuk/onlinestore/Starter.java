@@ -10,7 +10,7 @@ public class Starter {
     private static final Logger logger = LoggerFactory.getLogger(Starter.class);
 
     public static void main(String[] args) throws Exception {
-        int port = Integer.parseInt(System.getenv("PORT"));
+        int port = Integer.parseInt(System.getenv().get("PORT"));
         HandlerCollection handlers = new HandlerCollection();
         WebAppContext webapp = new WebAppContext();
         webapp.setWar(Starter.class.getProtectionDomain().getCodeSource().getLocation() + "../online-store-1.0-SNAPSHOT.war");
