@@ -13,11 +13,6 @@
         <context:property-placeholder location="classpath:properties/dev.application.properties"/>
     </beans>
     <beans profile="prod">
-        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-            <property name="url" value="${JDBC_DATABASE_URL}"/>
-            <property name="username" value="${JDBC_DATABASE_USERNAME}"/>
-            <property name="password" value="${JDBC_DATABASE_PASSWORD}"/>
-        </bean>
         <context:property-placeholder location="classpath:properties/prod.application.properties"/>
     </beans>
     <!--dao-->
