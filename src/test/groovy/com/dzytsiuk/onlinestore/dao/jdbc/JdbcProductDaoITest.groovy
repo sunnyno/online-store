@@ -53,14 +53,4 @@ class JdbcProductDaoITest {
             assertNotNull(actualProducts.find { it })
         }
     }
-
-    @Test
-    void insertProductTest() {
-        def time = "2018-06-12 18:46:04.407570"
-        def now = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))
-        def expectedProduct = new Product(creationDate: now, name: "test", price: 100 as double)
-        productDao.save(expectedProduct)
-        def actualProducts = productDao.findAll()
-        assertNotNull(actualProducts.find { expectedProduct })
-    }
 }

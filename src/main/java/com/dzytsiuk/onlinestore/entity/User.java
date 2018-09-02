@@ -64,4 +64,12 @@ public class User {
 
         return Objects.hash(id, login, password);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                '}';
+    }
 }

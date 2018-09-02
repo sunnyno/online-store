@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Pastry</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css" >
+    <link rel="stylesheet" href="../assets/css/add_style.css" >
+</head>
+<body>
+
+<header class="container header">
+    <div class="header__text">
+        <img class="header__logo" src="../assets/pictures/logo.png" alt="logo">
+        <nav class="main-nav">
+            <ul class="main-nav__list">
+                <li class="main-nav__item"><a href="/products">HOME</a></li>
+                <li class="main-nav__item"><a href="/product/add">ADD PRODUCT</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <section class="product">
+        <h2 class="product__header">Add Product</h2>
+        <form class="product__add" action="/product/add" method="POST">
+            <label for="name">Name</label>
+            <input type="text" class="product__attribute" id="name"
+                   placeholder="Enter product name" name="name" />
+            <label for="price">Price</label>
+            <input type="text" class="product__attribute" id="price"
+                   placeholder="Enter product price" name="price"/>
+            <button type="submit" class="btn add__btn">Add</button>
+            <a href="/products" name="cancel" class="btn cancel__btn">Cancel</a>
+        </form>
+    </section>
+</main>
+
+<footer class="container">
+    <section class="contacts">
+        <h2 class="contacts__header">Visit the shop</h2>
+        <p>+380971112223</p>
+        <p>London center of cakes, 12</p>
+        <p>MON-SAT: 11AM-7PM</p>
+        <p>SUN: 12PM-6PM</p>
+    </section>
+    <section class="social">
+        <h2 class="social__header">Follow us</h2>
+        <a href="" class="social__item"><img src="../assets/pictures/vk.png" alt="vk"></a>
+        <a href="#" class="social__item"><img src="../assets/pictures/fb.png" alt="fb"></a>
+        <a href="#" class="social__item"><img src="../assets/pictures/inst.png" alt="inst"></a>
+    </section>
+</footer>
+
+</body>
+</html>

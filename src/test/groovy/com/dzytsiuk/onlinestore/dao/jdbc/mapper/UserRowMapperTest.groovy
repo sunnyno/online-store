@@ -12,8 +12,8 @@ class UserRowMapperTest {
     void mapRowTest() {
         def rsMock = [next     : { true },
                       getInt   : { password -> 1 },
-                      getString: { salt -> "salt" }] as ResultSet
-        User expectedUser = new User(login: 'salt', password: 1, salt: "salt")
-        assertEquals(expectedUser, new UserRowMapper().mapRow(rsMock))
+                      getString: { str -> "str" }] as ResultSet
+        User expectedUser = new User(login: 'str', password: 1, salt: "str")
+        assertEquals(expectedUser, new UserRowMapper().mapRow(rsMock, 1))
     }
 }

@@ -2,6 +2,8 @@ package com.dzytsiuk.onlinestore.web.filter;
 
 
 import com.dzytsiuk.onlinestore.security.SecurityService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -10,15 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
+
 public class SecurityFilter implements Filter {
     private static final String LOGIN_URI = "/login";
     private static final String USER_TOKEN_COOKIE = "user-token";
     private static final String ASSETS_URI = "/assets/";
-    private SecurityService securityService;
 
-    public SecurityFilter(SecurityService securityService) {
-        this.securityService = securityService;
-    }
+    private SecurityService securityService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -40,10 +40,15 @@ public class SecurityFilter implements Filter {
         }
     }
 
+    @Autowired
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
+    }
 
     @Override
     public void init(FilterConfig filterConfig) {
-
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+                filterConfig.getServletContext());
     }
 
     @Override

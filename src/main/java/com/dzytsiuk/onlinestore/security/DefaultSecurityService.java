@@ -1,9 +1,11 @@
 package com.dzytsiuk.onlinestore.security;
 
 import com.dzytsiuk.onlinestore.entity.User;
-import com.dzytsiuk.onlinestore.security.builder.SessionBuilder;
-import com.dzytsiuk.onlinestore.security.builder.SessionBuilderImpl;
 import com.dzytsiuk.onlinestore.service.UserService;
+import com.dzytsiuk.onlinestore.security.builder.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +13,13 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+@Service
 public class DefaultSecurityService implements SecurityService {
     private static final String USER_TOKEN_COOKIE = "user-token";
+    @Autowired
     private UserService userService;
     private Map<User, Session> sessions = new HashMap<>();
+    @Value("${session.ttl}")
     private long timeToLive;
 
     @Override
@@ -47,7 +52,6 @@ public class DefaultSecurityService implements SecurityService {
                     sessionBuilder.setToken(token);
                     sessionBuilder.setUser(user);
                     sessionBuilder.setExpireDate(LocalDateTime.now().plusSeconds(timeToLive));
-                    sessionBuilder.setCartItems(new ArrayList<>());
                     session = sessionBuilder.getSession();
                     sessions.put(user, session);
                 }
