@@ -7,6 +7,10 @@ html{
 body{
     font-family: 'Raleway', sans-serif;
     min-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 100vh;
 }
 
 p{
@@ -46,11 +50,14 @@ p{
 
 /*header*/
 .header{
-    background: url("/assets/img/header_back.jpg");
-    background-position: center;
+    background: url("/assets/img/header_back.jpg") center;
     background-size: cover;
-    height: 500px;
+    flex: 0 0 500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
+
 .header__text{
     display: flex;
 }
@@ -63,7 +70,7 @@ p{
 
 .main-nav__list{
     display: flex;
-    margin: 45px 0 0 650px;
+    margin: 45px 0 0 550px;
     list-style-type: none;
 }
 
@@ -135,10 +142,12 @@ p{
 footer{
     background-color: #363636;
     display: flex;
+    flex: 0 0 300px;
+    justify-content: space-around;
 }
 
 .contacts{
-    margin: 40px 50px 30px 150px;
+    margin-top: 40px;
 }
 .contacts__header{
     margin-top: 0;
@@ -153,7 +162,7 @@ footer{
 }
 
 .social{
-    margin: 40px 0 0 150px;
+    margin-top: 40px;
 }
 
 .social__header{

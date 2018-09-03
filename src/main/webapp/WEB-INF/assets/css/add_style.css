@@ -1,7 +1,6 @@
 .header{
-    background-image: none;
-    background-color: #393939;
-    height: 100px;
+    background: #393939 none;
+    flex: 0 0 90px;
 }
 
 .product__header{
