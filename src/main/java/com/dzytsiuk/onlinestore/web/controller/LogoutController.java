@@ -1,6 +1,7 @@
 package com.dzytsiuk.onlinestore.web.controller;
 
 import com.dzytsiuk.onlinestore.security.SecurityService;
+import com.dzytsiuk.onlinestore.web.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +16,6 @@ import java.util.Optional;
 
 @Controller
 public class LogoutController {
-    private static final String USER_TOKEN_COOKIE = "user-token";
-
     private SecurityService securityService;
 
     @Autowired
@@ -26,14 +25,8 @@ public class LogoutController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public void doLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Cookie[] cookies = req.getCookies();
-        Optional<Cookie> tokenCookie = Optional.empty();
-        if (cookies != null) {
-            tokenCookie = Arrays.stream(cookies)
-                    .filter(cookie -> cookie.getName().equals(USER_TOKEN_COOKIE))
-                    .findFirst();
-        }
-        tokenCookie.ifPresent(cookie -> {
+        Optional<Cookie> optionalCookie = WebUtil.getCurrentSessionCookie(req);
+        optionalCookie.ifPresent(cookie -> {
             securityService.logout(cookie.getValue());
             cookie.setMaxAge(0);
             resp.addCookie(cookie);

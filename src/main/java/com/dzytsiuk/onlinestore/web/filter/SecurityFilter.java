@@ -2,6 +2,7 @@ package com.dzytsiuk.onlinestore.web.filter;
 
 
 import com.dzytsiuk.onlinestore.security.SecurityService;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 

@@ -11,5 +11,7 @@ public interface ProductService {
 
     void save(Product product);
 
+    Product findProductById(int productId);
+
     void setProductDao(ProductDao productDao);
 }

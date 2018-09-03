@@ -12,5 +12,7 @@ public interface ProductDao {
 
     void save(Product product);
 
+    Product findProductById(int productId);
+
     void setDataSource(DataSource dataSource);
 }

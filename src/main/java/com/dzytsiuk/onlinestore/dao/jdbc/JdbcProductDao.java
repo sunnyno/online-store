@@ -19,6 +19,7 @@ public class JdbcProductDao implements ProductDao {
     private static final ProductRowMapper PRODUCT_ROW_MAPPER = new ProductRowMapper();
     private static final String FIND_ALL_SQL = "select id, creation_date, name, price from product;";
     private static final String SAVE_SQL = "insert into product(creation_date, name, price) values (?,?,?);";
+    private static final String FIND_BY_ID_SQL = "select id, creation_date, name, price from product where id = ?;";
 
     private JdbcTemplate jdbcTemplateObject;
 
@@ -34,6 +35,12 @@ public class JdbcProductDao implements ProductDao {
         jdbcTemplateObject.update(SAVE_SQL, PRODUCT_ROW_MAPPER, product.getCreationDate(), product.getName(), product.getPrice());
     }
 
+    @Override
+    public Product findProductById(int productId) {
+        logger.info("Executing {}", FIND_BY_ID_SQL);
+        return jdbcTemplateObject.queryForObject(FIND_BY_ID_SQL, PRODUCT_ROW_MAPPER, productId);
+
+    }
 
     @Autowired
     @Override
