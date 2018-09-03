@@ -6,6 +6,7 @@ import com.dzytsiuk.onlinestore.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,9 +25,15 @@ public class JdbcUserDao implements UserDao {
     @Override
     public Optional<User> findByLogin(String login) {
         logger.info("Executing query {}", FIND_BY_LOGIN_SQL);
-        User user = jdbcTemplateObject.queryForObject(FIND_BY_LOGIN_SQL, USER_ROW_MAPPER, login);
-        logger.info("Found user {}", user);
-        return Optional.of(user);
+        try {
+            User user = jdbcTemplateObject.queryForObject(FIND_BY_LOGIN_SQL, USER_ROW_MAPPER, login);
+            logger.info("Found user {}", user);
+            return Optional.of(user);
+        }catch (EmptyResultDataAccessException e){
+            logger.info("User {} not found", login);
+            return Optional.empty();
+        }
+
     }
 
     @Autowired

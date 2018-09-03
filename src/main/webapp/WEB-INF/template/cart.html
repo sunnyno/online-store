@@ -28,8 +28,8 @@
         <ul class="cart__list">
             <li class="cart__item" th:each="cartItem : ${cartItems}">
                 <div class="product__description"  >
-                    <form action="/cart/delete" method="post">
-                        <button class="delete__btn" name="productId" th:value="${cartItem.product.id}"></button>
+                    <form th:action="'/cart/delete/'+${cartItem.product.id}" method="post">
+                        <button class="delete__btn" name="productId"></button>
                     </form>
                     <img class="product__image" src="/assets/img/default-product.jpg" alt="product photo">
                     <ul class="description__list">

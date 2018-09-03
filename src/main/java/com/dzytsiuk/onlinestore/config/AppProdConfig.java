@@ -2,15 +2,18 @@ package com.dzytsiuk.onlinestore.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 
 import javax.sql.DataSource;
 
 @Profile("prod")
 @Configuration
-public class AppConfig {
+@ComponentScan(basePackages = "com.dzytsiuk.onlinestore",
+        excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX,
+                pattern="com\\.dzytsiuk\\.onlinestore\\.web\\.controller.*"))
+@PropertySource(
+        value={"classpath:properties/prod.application.properties"})
+public class AppProdConfig {
     @Value("${JDBC_DATABASE_URL}")
     private String url;
     @Value("${JDBC_DATABASE_USERNAME}")

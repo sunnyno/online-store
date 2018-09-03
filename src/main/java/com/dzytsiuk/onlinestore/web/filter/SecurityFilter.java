@@ -43,6 +43,7 @@ public class SecurityFilter implements Filter {
                     Cookie cookie = optionalCookie.get();
                     processSession(filterChain, request, response, cookie);
                 } else {
+                    logger.info("No user cookie specified");
                     response.sendRedirect("/login");
                 }
             }else{

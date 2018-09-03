@@ -6,6 +6,7 @@ import com.dzytsiuk.onlinestore.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,6 +21,7 @@ public class DefaultProductService implements ProductService {
 
     @Override
     public void save(Product product) {
+        product.setCreationDate(LocalDateTime.now());
         productDao.save(product);
     }
 

@@ -18,7 +18,7 @@ import java.util.*;
 public class DefaultSecurityService implements SecurityService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final UserService userService;
-    private List<Session> sessions = new ArrayList<>();
+    private List<Session> sessions = Collections.synchronizedList(new ArrayList<>());
     @Value("${session.ttl}")
     private long timeToLive;
 

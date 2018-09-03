@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +17,6 @@ import java.util.Optional;
 
 @Controller
 public class LoginController {
-    private static final String LOGIN_PARAMETER_NAME = "login";
-    private static final String PASSWORD_PARAMETER_NAME = "password";
     private static final String USER_TOKEN_PARAMETER_NAME = "user-token";
     private SecurityService securityService;
 
@@ -33,24 +32,24 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String doLogin(HttpServletRequest req, HttpServletResponse resp, ModelMap modelMap) {
-        String login = req.getParameter(LOGIN_PARAMETER_NAME);
-        String password = req.getParameter(PASSWORD_PARAMETER_NAME);
+    public String doLogin(@RequestParam String login, @RequestParam String password, HttpServletResponse resp, ModelMap modelMap) {
         Optional<Session> optionalSession = securityService.auth(login, password);
-        optionalSession.ifPresent(token -> {
-            Cookie cookie = new Cookie(USER_TOKEN_PARAMETER_NAME, optionalSession.get().getToken());
-            long secondsToExpire = securityService.getSessionTimeToLive(optionalSession.get());
-            cookie.setMaxAge(Math.toIntExact(secondsToExpire));
-            cookie.setHttpOnly(true);
-            resp.addCookie(cookie);
-            try {
-                resp.sendRedirect("/products");
-            } catch (IOException e) {
-                throw new RuntimeException("Redirection failed", e);
-            }
-        });
+        Optional<Cookie> cookie = optionalSession.map(this::createCookie);
+        String viewString = "redirect:/products";
+        if(cookie.isPresent()){
+            resp.addCookie(cookie.get());
+        }else{
+            modelMap.addAttribute("errorMessage", "Invalid login/password");
+            viewString = "login.html";
+        }
+        return viewString;
+    }
 
-        modelMap.addAttribute("errorMessage", "Invalid login/password");
-        return "login.html";
+    private Cookie createCookie(Session session) {
+        Cookie cookie = new Cookie(USER_TOKEN_PARAMETER_NAME, session.getToken());
+        long secondsToExpire = securityService.getSessionTimeToLive(session);
+        cookie.setMaxAge(Math.toIntExact(secondsToExpire));
+        cookie.setHttpOnly(true);
+        return cookie;
     }
 }

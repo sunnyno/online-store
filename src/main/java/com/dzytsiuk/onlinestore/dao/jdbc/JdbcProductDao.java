@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -32,7 +33,7 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public void save(Product product) {
         logger.info("Executing query {}", SAVE_SQL);
-        jdbcTemplateObject.update(SAVE_SQL, PRODUCT_ROW_MAPPER, product.getCreationDate(), product.getName(), product.getPrice());
+        jdbcTemplateObject.update(SAVE_SQL, Timestamp.valueOf(product.getCreationDate()), product.getName(), product.getPrice());
     }
 
     @Override

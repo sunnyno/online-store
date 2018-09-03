@@ -16,6 +16,10 @@ public class AuthPrincipal implements Principal {
         return session.getUser().getLogin();
     }
 
+    public Session getSession() {
+        return session;
+    }
+
     public User getUser() {
         return session.getUser();
     }

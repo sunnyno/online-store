@@ -13,8 +13,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(LocalDateTime creationDate, String name, double price) {
-        this.creationDate = creationDate;
+    public Product(String name, double price) {
         this.name = name;
         this.price = price;
     }
