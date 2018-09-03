@@ -2,7 +2,7 @@ package com.dzytsiuk.onlinestore.web.controller;
 
 import com.dzytsiuk.onlinestore.entity.CartItem;
 import com.dzytsiuk.onlinestore.security.SecurityService;
-import com.dzytsiuk.onlinestore.security.Session;
+import com.dzytsiuk.onlinestore.entity.security.Session;
 import com.dzytsiuk.onlinestore.service.ProductService;
 import com.dzytsiuk.onlinestore.web.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;

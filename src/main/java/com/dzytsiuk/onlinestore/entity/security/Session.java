@@ -1,4 +1,4 @@
-package com.dzytsiuk.onlinestore.security;
+package com.dzytsiuk.onlinestore.entity.security;
 
 import com.dzytsiuk.onlinestore.entity.CartItem;
 import com.dzytsiuk.onlinestore.entity.Product;

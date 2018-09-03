@@ -1,7 +1,7 @@
 package com.dzytsiuk.onlinestore.web.controller;
 
 import com.dzytsiuk.onlinestore.security.SecurityService;
-import com.dzytsiuk.onlinestore.security.Session;
+import com.dzytsiuk.onlinestore.entity.security.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

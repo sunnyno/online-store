@@ -1,6 +1,8 @@
 package com.dzytsiuk.onlinestore.security;
 
 import com.dzytsiuk.onlinestore.entity.User;
+import com.dzytsiuk.onlinestore.entity.security.AuthPrincipal;
+import com.dzytsiuk.onlinestore.entity.security.Session;
 import com.dzytsiuk.onlinestore.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,31 +18,13 @@ import java.util.*;
 public class DefaultSecurityService implements SecurityService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final UserService userService;
-    private Map<User, Session> sessions = new HashMap<>();
+    private List<Session> sessions = new ArrayList<>();
     @Value("${session.ttl}")
     private long timeToLive;
 
     @Autowired
     public DefaultSecurityService(UserService userService) {
         this.userService = userService;
-    }
-
-    @Override
-    public boolean isValid(String token) {
-        logger.debug("Start validation of session with token {}", token);
-        Optional<Session> sessionByToken = getSessionByToken(token);
-        if (sessionByToken.isPresent()) {
-            Session session = sessionByToken.get();
-            if (session.getExpireDate().isBefore(LocalDateTime.now())) {
-                sessions.remove(session.getUser());
-                logger.info("Session with token {} is expired and was removed", token);
-                return false;
-            } else {
-                logger.info("Session with token {} is valid", token);
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -52,19 +36,20 @@ public class DefaultSecurityService implements SecurityService {
             int hashedPass = Objects.hash(password, user.getSalt());
             int userPass = user.getPassword();
             if (userPass == hashedPass) {
-                Session session = sessions.get(user);
-                if (session == null) {
+                Optional<Session> optionalSession = sessions.stream().filter(sess -> sess.getUser().equals(user)).findFirst();
+                if (!optionalSession.isPresent()) {
                     String token = UUID.randomUUID().toString();
-                    session = Session.builder()
+                    Session session = Session.builder()
                             .withExpireDate(LocalDateTime.now().plusSeconds(timeToLive))
                             .withToken(token)
                             .withUser(user)
                             .withCart(new ArrayList<>())
                             .build();
-                    sessions.put(user, session);
+                    sessions.add(session);
                     logger.info("Session for user {} created", user.getLogin());
+                    return Optional.of(session);
                 }
-                return Optional.of(session);
+                return optionalSession;
             }
         }
         return Optional.empty();
@@ -77,17 +62,28 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     @Override
-    public void logout(String token) {
-        Optional<Session> sessionByToken = getSessionByToken(token);
-        sessionByToken.ifPresent(session -> {
-            sessions.remove(session.getUser());
-            logger.info("User {} was logged out", session.getUser());
-        });
+    public void logout(AuthPrincipal authPrincipal) {
+        sessions.removeIf(session -> session.getUser().equals(authPrincipal.getUser()));
     }
 
     @Override
     public Optional<Session> getSessionByToken(String token) {
-        return sessions.values().stream().filter(session -> session.getToken().equals(token)).findFirst();
+        Optional<Session> sessionByToken= sessions
+                .stream()
+                .filter(session -> session.getToken().equals(token))
+                .findFirst();
+        if (sessionByToken.isPresent()) {
+            Session session = sessionByToken.get();
+            if (session.getExpireDate().isBefore(LocalDateTime.now())) {
+                sessions.remove(session);
+                logger.info("Session with token {} is expired and was removed", token);
+                return Optional.empty();
+            } else {
+                logger.info("Session with token {} is valid", token);
+                return sessionByToken;
+            }
+        }
+        return Optional.empty();
     }
 
     public void setTimeToLive(int timeToLive) {

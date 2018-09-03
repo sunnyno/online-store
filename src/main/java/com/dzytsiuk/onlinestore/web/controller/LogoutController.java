@@ -1,5 +1,6 @@
 package com.dzytsiuk.onlinestore.web.controller;
 
+import com.dzytsiuk.onlinestore.entity.security.AuthPrincipal;
 import com.dzytsiuk.onlinestore.security.SecurityService;
 import com.dzytsiuk.onlinestore.web.util.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,9 @@ public class LogoutController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public void doLogout(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<Cookie> optionalCookie = WebUtil.getCurrentSessionCookie(req);
-        optionalCookie.ifPresent(cookie -> {
-            securityService.logout(cookie.getValue());
-            cookie.setMaxAge(0);
-            resp.addCookie(cookie);
-        });
+        AuthPrincipal userPrincipal = (AuthPrincipal) req.getUserPrincipal();
+        securityService.logout(userPrincipal);
+        resp.setStatus(HttpServletResponse.SC_OK);
         resp.sendRedirect("/login");
     }
 }
