@@ -35,14 +35,12 @@ public class CartController {
     public String addToCart(@PathVariable int id, AuthPrincipal authPrincipal) {
         Session session = authPrincipal.getSession();
         session.addProduct(productService.findProductById(id));
-        return "redirect:/products";
+        return "products.html";
     }
 
-    //TODO: method DELETE
-    @RequestMapping(value = "/cart/delete/{id}", method = RequestMethod.POST)
-    public String deleteFromCart(@PathVariable int id, AuthPrincipal authPrincipal) {
+    @RequestMapping(value = "/cart/{id}", method = RequestMethod.DELETE)
+    public void deleteFromCart(@PathVariable int id, AuthPrincipal authPrincipal) {
         Session session = authPrincipal.getSession();
         session.removeProduct(productService.findProductById(id));
-        return "redirect:/cart";
     }
 }

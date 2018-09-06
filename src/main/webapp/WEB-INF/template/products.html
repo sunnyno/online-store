@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>Pastry Shop</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,300i,700,700i" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.css" >
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 
@@ -16,28 +18,34 @@
             <ul class="main-nav__list">
                 <li class="main-nav__item"><a href="/products">HOME</a></li>
                 <li class="main-nav__item"><a href="/product/add">ADD PRODUCT</a></li>
-                <li class="main-nav__item"><a href="/cart"><img src="/assets/pictures/cart.png" alt="cart logo"></a></li>
+                <li class="main-nav__item"><a href="/cart"><i class="fas fa-shopping-basket"></i></a></li>
                 <li class="main-nav__item"><a href="/logout">LOGOUT</a></li>
             </ul>
         </nav>
     </div>
+    <div class="slideshow-container">
+        <p class="logo__ontop">There is always a room <br>for desert</p>
+        <img class="mySlides fade" src="/assets/img/1.jpg">
+        <img class="mySlides fade" src="/assets/img/2.jpg">
+        <img class="mySlides fade " src="/assets/img/header_back.jpg">
+    </div>
 </header>
 
 <main class="container">
-    <section class="product">
-        <h2 class="product__header">Catalog</h2>
-        <div class="product__description" th:each="product : ${products}" >
+    <ul class="product">
+        <li class="product__description" th:each="product : ${products}">
             <img class="product__image" src="/assets/img/default-product.jpg" alt="product photo">
             <ul class="description__list">
-                <li class="product__name"  th:text="${product.name}"></li>
-                <li class="product__price"  ><span th:text="${product.price}"></span> $</li>
-                <li class="product__date">Created on <span th:text="${#temporals.format(product.creationDate, 'dd-MM-yyyy HH:mm')}"></span></li>
-                <li > <form th:action="'/cart/'+${product.id}" method="post">
-                    <button class="btn" name="productId">add to cart</button>
-                </form></li>
+                <li class="product__name" th:text="${product.name}"></li>
+                <li class="product__price"><span th:text="${product.price}"></span> $</li>
+                <li class="product__date">Created on <span
+                        th:text="${#temporals.format(product.creationDate, 'dd-MM-yyyy HH:mm')}"></span></li>
+                <li>
+                    <button class="btn addToCartButton" th:data-id="${product.id}" name="productId">add to cart</button>
+                </li>
             </ul>
-        </div>
-    </section>
+        </li>
+    </ul>
 </main>
 
 <footer class="container">
@@ -50,10 +58,13 @@
     </section>
     <section class="social">
         <h2 class="social__header">Follow us</h2>
-        <a href="" class="social__item"><img src="/assets/pictures/vk.png" alt="vk"></a>
-        <a href="#" class="social__item"><img src="/assets/pictures/fb.png" alt="fb"></a>
-        <a href="#" class="social__item"><img src="/assets/pictures/inst.png" alt="inst"></a>
+        <a href="#" class="social__item"><i class="fab fa-vk"></i></a>
+        <a href="#" class="social__item"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social__item"><i class="fab fa-instagram"></i></a>
     </section>
 </footer>
+<script src="/assets/jquery/jquery.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
 </body>
 </html>

@@ -5,6 +5,8 @@
     <title>Add Pastry</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,300i,700,700i" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/style.css" >
     <link rel="stylesheet" href="/assets/css/add_style.css" >
 </head>
@@ -17,7 +19,7 @@
             <ul class="main-nav__list">
                 <li class="main-nav__item"><a href="/products">HOME</a></li>
                 <li class="main-nav__item"><a href="/product/add">ADD PRODUCT</a></li>
-                <li class="main-nav__item"><a href="/cart"><img src="/assets/pictures/cart.png" alt="cart logo"></a></li>
+                <li class="main-nav__item"><a href="/cart"><i class="fas fa-shopping-basket"></i></a></li>
                 <li class="main-nav__item"><a href="/logout">LOGOUT</a></li>
             </ul>
         </nav>
@@ -25,7 +27,7 @@
 </header>
 
 <main class="container">
-    <section class="product">
+    <section class="add__product">
         <h2 class="product__header">Add Product</h2>
         <form class="product__add" action="/product/add" method="POST">
             <label for="name">Name</label>
@@ -50,9 +52,9 @@
     </section>
     <section class="social">
         <h2 class="social__header">Follow us</h2>
-        <a href="" class="social__item"><img src="/assets/pictures/vk.png" alt="vk"></a>
-        <a href="#" class="social__item"><img src="/assets/pictures/fb.png" alt="fb"></a>
-        <a href="#" class="social__item"><img src="/assets/pictures/inst.png" alt="inst"></a>
+        <a href="#" class="social__item"><i class="fab fa-vk"></i></a>
+        <a href="#" class="social__item"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social__item"><i class="fab fa-instagram"></i></a>
     </section>
 </footer>
 

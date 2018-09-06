@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Product {
-    private long id;
+    private int id;
     private LocalDateTime creationDate;
     private String name;
     private double price;
@@ -18,11 +18,11 @@ public class Product {
         this.price = price;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -63,6 +63,17 @@ public class Product {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(id, creationDate, name, price);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", creationDate=" + creationDate +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

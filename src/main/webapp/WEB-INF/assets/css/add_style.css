@@ -2,16 +2,17 @@
     background: #393939 none;
     flex: 0 0 90px;
 }
-
-.product__header{
-    margin-bottom: 20px;
+main{
+    display: flex;
 }
 
-.product{
-    height: 500px;
-    padding-top: 100px;
-    padding-left: 400px;
-    /*padding-bottom: 150px;*/
+.product__header{
+    text-align: center;
+}
+
+.add__product{
+    margin: auto;
+
 }
 .product__add{
     margin-left: 60px;
@@ -34,7 +35,7 @@
 }
 
 .cancel__btn{
-    padding: 7px;
+    padding: 8.5px;
     width: 120px;
     margin: 0 50px 20px 120px;
 }
