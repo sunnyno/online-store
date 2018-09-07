@@ -15,7 +15,7 @@ class DefaultProductServiceTest {
         def expectedProducts = [new Product(id: 1, creationDate: now, name: 'test', price: 1000 as double)]
         def rsProductDao = { getAllProducts -> expectedProducts } as ProductDao
 
-        ProductService productService = new DefaultProductService(productDao: rsProductDao);
+        ProductService productService = new DefaultProductService(rsProductDao);
         def actualProducts = productService.findAll().collect()
         actualProducts.each { assertTrue(expectedProducts.remove(it)) }
     }
@@ -27,7 +27,7 @@ class DefaultProductServiceTest {
         def expectedProducts = []
         def rsProductDao = [save: { product -> expectedProducts.add(productToInsert) }, findAll: { getAllProducts -> expectedProducts }] as ProductDao
 
-        ProductService productService = new DefaultProductService(productDao: rsProductDao);
+        ProductService productService = new DefaultProductService(rsProductDao);
         def actualProducts = productService.findAll().collect()
         actualProducts.each { assertTrue(expectedProducts.remove(it)) }
     }

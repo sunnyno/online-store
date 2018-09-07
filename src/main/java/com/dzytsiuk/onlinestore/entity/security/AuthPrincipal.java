@@ -7,6 +7,10 @@ import java.security.Principal;
 public class AuthPrincipal implements Principal {
     private Session session;
 
+    //for tests
+    public AuthPrincipal() {
+    }
+
     public AuthPrincipal(Session session) {
         this.session = session;
     }

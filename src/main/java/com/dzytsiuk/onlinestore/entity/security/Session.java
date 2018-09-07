@@ -14,7 +14,6 @@ public class Session {
     private final LocalDateTime expireDate;
     private final List<CartItem> cartItems;
 
-
     public Session(String token, User user, LocalDateTime expireDate, List<CartItem> cartItems) {
         this.token = token;
         this.user = user;
@@ -58,6 +57,16 @@ public class Session {
                 cartItem.setQuantity(quantity-1);
             }
         });
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "token='" + token + '\'' +
+                ", user=" + user +
+                ", expireDate=" + expireDate +
+                ", cartItems=" + cartItems +
+                '}';
     }
 
     public static SessionBuilder builder() {

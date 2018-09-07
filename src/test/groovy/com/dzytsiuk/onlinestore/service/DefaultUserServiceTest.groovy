@@ -8,12 +8,12 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 
 class DefaultUserServiceTest {
+
     @Test
     void findByLoginTest() {
         def expectedUser = Optional.of(new User(login: 'zhenya', password: -703043761))
         def rsUserDao = { findByLogin -> expectedUser } as UserDao
-
-        UserService userService = new DefaultUserService(userDao: rsUserDao)
+        UserService userService = new DefaultUserService(rsUserDao)
         Optional<User> actualUser = userService.findByLogin("zhenya")
         assertTrue(actualUser.isPresent())
         assertEquals(expectedUser.get(), actualUser.get())

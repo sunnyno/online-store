@@ -14,20 +14,14 @@ import javax.sql.DataSource;
 @PropertySource(
         value={"classpath:properties/prod.application.properties"})
 public class AppProdConfig {
-    @Value("${JDBC_DATABASE_URL}")
-    private String url;
-    @Value("${JDBC_DATABASE_USERNAME}")
-    private String username;
-    @Value("${JDBC_DATABASE_PASSWORD}")
-    private String password;
-    @Value("${web.ssl}")
-    private String ssl;
-    @Value("${web.sslfactory}")
-    private String sslFactory;
-
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource dataSource(
+            @Value("${JDBC_DATABASE_URL}") String url,
+            @Value("${JDBC_DATABASE_USERNAME}")String username,
+            @Value("${JDBC_DATABASE_PASSWORD}") String password,
+            @Value("${web.ssl}") String ssl,
+            @Value("${web.sslfactory}") String sslFactory) {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl(url);
         dataSource.setUsername(username);

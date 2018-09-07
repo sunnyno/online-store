@@ -89,4 +89,9 @@ public class DefaultSecurityService implements SecurityService {
     public void setTimeToLive(int timeToLive) {
         this.timeToLive = timeToLive;
     }
+
+    //for tests
+    List<Session> getSessions() {
+        return sessions;
+    }
 }

@@ -55,14 +55,15 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return id == user.id &&
+                password == user.password &&
                 Objects.equals(login, user.login) &&
-                Objects.equals(password, user.password);
+                Objects.equals(salt, user.salt);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, login, password);
+        return Objects.hash(id, login, password, salt);
     }
 
     @Override

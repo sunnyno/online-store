@@ -9,16 +9,16 @@ import java.util.Optional;
 
 @Service
 public class DefaultUserService implements UserService {
+    private final UserDao userDao;
+
     @Autowired
-    private UserDao userDao;
+    public DefaultUserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public Optional<User> findByLogin(String login) {
         return userDao.findByLogin(login);
     }
 
-    @Override
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
 }

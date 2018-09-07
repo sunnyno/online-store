@@ -27,13 +27,7 @@
 .cart__list tr:nth-child(even){background-color: #f2f2f2;}
 
 .cart__list tr:hover {background-color: #ddd;}
-/*
-.cart__item{
-    display: flex;
-    border-bottom: 1px solid  #393939;
-    margin-right: 100px;
-}
-*/
+
 .delete__item{
     margin-top: 20px;
 }
@@ -45,6 +39,7 @@
     background-image: url("../pictures/del.png");
     border: none;
     margin-left: 30%;
+    cursor: pointer;
 }
 
 .delete__btn:active{

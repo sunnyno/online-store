@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/product/add", method = RequestMethod.POST)
-    public String addProductForm(@RequestParam String name, @RequestParam Double price) {
+    public String addProduct(@RequestParam String name, @RequestParam Double price) {
         productService.save(new Product(name, price));
         return "redirect:/products";
     }

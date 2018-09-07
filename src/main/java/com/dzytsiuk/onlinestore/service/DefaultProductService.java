@@ -11,8 +11,12 @@ import java.util.List;
 
 @Service
 public class DefaultProductService implements ProductService {
+    private final ProductDao productDao;
+
     @Autowired
-    private ProductDao productDao;
+    public DefaultProductService(ProductDao productDao) {
+        this.productDao = productDao;
+    }
 
     @Override
     public List<Product> findAll() {
@@ -30,8 +34,4 @@ public class DefaultProductService implements ProductService {
         return productDao.findProductById(productId);
     }
 
-    @Override
-    public void setProductDao(ProductDao productDao) {
-        this.productDao = productDao;
-    }
 }

@@ -60,6 +60,7 @@ public class SecurityFilter implements Filter {
             Session session = optionalSession.get();
             MDC.put(USER_KEY, session.getUser().getLogin());
             try {
+                logger.info("Session provider for user {}", session.getUser().getLogin());
                 filterChain.doFilter(new UserRequestWrapper(request, session), response);
             } finally {
                 MDC.clear();

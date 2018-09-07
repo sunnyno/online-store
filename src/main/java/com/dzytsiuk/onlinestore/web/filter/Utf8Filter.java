@@ -15,7 +15,7 @@ public class Utf8Filter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         if (!httpServletRequest.getRequestURI().contains("/assets/")) {
             servletResponse.setContentType("text/html;charset=utf-8");
-            logger.info("UTF8 encoding set");
+            logger.info("UTF-8 encoding set");
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
