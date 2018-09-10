@@ -29,7 +29,7 @@
     <section class="container cart">
         <h2 class="cart__header">Shopping Cart</h2>
         <table class="cart__list">
-            <tr class="cart__item" th:each="cartItem : ${cartItems}">
+            <tr class="cart__item"  th:each="cartItem : ${cartItems}" th:id ="${cartItem.product.id}">
                 <td class="delete__item">
                     <button class="delete__btn" th:data-id="${cartItem.product.id}" name="productId"></button>
                 </td>
@@ -44,7 +44,7 @@
             </tr>
         </table>
         <div class="cart__total">
-            <p>Total: <span th:text="${#aggregates.sum(cartItems.![product.price*quantity])}"></span> $</p>
+            <p>Total: <span id="total__price" th:text="${#aggregates.sum(cartItems.![product.price*quantity])}"></span> $</p>
         </div>
         <div class="cart__actions">
             <a class="btn cart__back" href="/products">Back</a>
@@ -70,6 +70,6 @@
     </section>
 </footer>
 <script src="/assets/jquery/jquery.min.js"></script>
-<script src="/assets/js/main.js"></script>
+<script type="module" src="/assets/js/main.js"></script>
 </body>
 </html>

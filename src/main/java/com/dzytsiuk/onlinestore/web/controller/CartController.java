@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/cart/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
     public void deleteFromCart(@PathVariable int id, AuthPrincipal authPrincipal) {
         Session session = authPrincipal.getSession();
         session.removeProduct(productService.findProductById(id));

@@ -8,11 +8,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -37,8 +34,8 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/product/add", method = RequestMethod.POST)
-    public String addProduct(@RequestParam String name, @RequestParam Double price) {
+    @ResponseBody
+    public void addProduct(@RequestParam String name, @RequestParam Double price) {
         productService.save(new Product(name, price));
-        return "redirect:/products";
     }
 }

@@ -52,12 +52,11 @@ class ProductControllerTest {
     }
 
     @Test
-    void addProductForm() {
+    void addProduct() {
         RequestBuilder requestBuilder = post("/product/add")
                 .param("name", 'name')
                 .param("price", 1.0 as String)
         mockMvc.perform(requestBuilder)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/products"))
+                .andExpect(status().isOk())
     }
 }

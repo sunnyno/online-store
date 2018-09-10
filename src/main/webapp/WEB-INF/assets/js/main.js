@@ -1,38 +1,16 @@
-const addButtons = $('.addToCartButton');
-[].forEach.call(addButtons, function(btn){
-    btn.onclick=btn.onclick = function(){
-        let xhr = new XMLHttpRequest();
-        const id = btn.getAttribute("data-id");
-        xhr.open("POST",  `/cart/${id}`, true);
-        xhr.send();
-    };
-});
-
-const deleteButtons = $('.delete__btn');
-[].forEach.call(deleteButtons, function(btn){
-    btn.onclick=btn.onclick = function(){
-        let xhr = new XMLHttpRequest();
-        const id = btn.getAttribute("data-id");
-        xhr.open("DELETE",  `/cart/${id}`, true);
-        xhr.send();
-        location.reload();
-    };
-});
+import Cart from './cart.js';
+import CartView from "./cart_view.js";
+import CartController from "./cart_controller.js";
+import Catalog from "./catalog.js";
+import CatalogView from "./catalog_view.js"
+import CatalogController from "./catalog_controller.js"
 
 
-let slideIndex = 0;
-(function showSlides() {
-    console.log(location.pathname);
-    if(location.pathname === '/products') {
-        const slides = $(".mySlides");
-        for (let i = 0; i < slides.length; i++) {
-            slides[i].classList.remove("show");
-        }
-        slideIndex++;
-        if (slideIndex > slides.length) {
-            slideIndex = 1
-        }
-        slides[slideIndex - 1].classList.add("show");
-        setTimeout(showSlides, 5000); // Change image every 2 seconds
-    }
-})();
+const cartModel = new Cart();
+const cartView = new CartView();
+new CartController(cartModel, cartView);
+
+
+const catalogModel = new Catalog();
+const catalogView = new CatalogView();
+new CatalogController(catalogModel, catalogView);

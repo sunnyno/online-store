@@ -29,16 +29,18 @@
 <main class="container">
     <section class="add__product">
         <h2 class="product__header">Add Product</h2>
-        <form class="product__add" action="/product/add" method="POST">
+        <div class="product__add" action="/product/add" method="POST">
             <label for="name">Name</label>
             <input type="text" class="product__attribute" id="name"
                    placeholder="Enter product name" name="name"/>
             <label for="price">Price</label>
+            <p id="price__error" hidden><i class="fas fa-exclamation-triangle"></i>
+                Price must be a number</p>
             <input type="text" class="product__attribute" id="price"
                    placeholder="Enter product price" name="price"/>
-            <button type="submit" class="btn add__btn">Add</button>
+            <button  class="btn add-product__btn">Add</button>
             <a href="/products" name="cancel" class="btn cancel__btn">Cancel</a>
-        </form>
+        </div>
     </section>
 </main>
 
@@ -57,6 +59,7 @@
         <a href="#" class="social__item"><i class="fab fa-instagram"></i></a>
     </section>
 </footer>
-
+<script src="/assets/jquery/jquery.min.js"></script>
+<script type="module" src="/assets/js/main.js"></script>
 </body>
 </html>

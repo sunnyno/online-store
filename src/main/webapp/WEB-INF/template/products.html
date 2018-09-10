@@ -41,7 +41,7 @@
                 <li class="product__date">Created on <span
                         th:text="${#temporals.format(product.creationDate, 'dd-MM-yyyy HH:mm')}"></span></li>
                 <li>
-                    <button class="btn addToCartButton" th:data-id="${product.id}" name="productId">add to cart</button>
+                    <button class="btn add-to-cart__btn" th:data-id="${product.id}" name="productId">add to cart</button>
                 </li>
             </ul>
         </li>
@@ -64,7 +64,8 @@
     </section>
 </footer>
 <script src="/assets/jquery/jquery.min.js"></script>
-<script src="/assets/js/main.js"></script>
+<script type="module" src="/assets/js/main.js"></script>
+<script src="/assets/js/slides.js"></script>
 
 </body>
 </html>
